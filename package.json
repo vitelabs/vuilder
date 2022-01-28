@@ -1,0 +1,24 @@
+{
+  "name": "viteshop",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/src/vite.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitelabs/viteshop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vitelabs/viteshop/issues"
+  },
+  "homepage": "https://github.com/vitelabs/viteshop",
+  "devDependencies": {
+    "@vite/vitejs": "^2.3.17",
+    "@vite/vitejs-accountblock": "^2.3.17",
+    "typescript": "^4.5.5"
+  }
+}
