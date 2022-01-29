@@ -12,4 +12,8 @@ To install viteshop, go to an empty folder, initialize an npm project (i.e. npm 
 npm install https://github.com/vitelabs/viteshop.git --save-dev
 ```
 
+## Usages
+
+TODO
+
 
