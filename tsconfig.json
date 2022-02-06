@@ -9,5 +9,13 @@
     "outDir": "lib",
     "sourceMap": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": [
+    "src/**/*"
+],
+"exclude": [
+    "node_modules",
+    "src/**/dist/*",
+    "src/**/distSrc/*"
+]
 }

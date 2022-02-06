@@ -1,15 +1,15 @@
-# viteshop
+# Vuilder Kit
 
-viteshop is an Vite development environment for professionals. It facilitates performing frequent tasks, such as running tests, automatically checking code for mistakes or interacting with a smart contract.
+**vuilder** is a Solidity++ smart contract development toolkit for Vite developers. 
 
-
+It facilitates performing frequent tasks such as contracts compiling, libraries linking, testing and deploying.
 
 ## Installation
 
-To install viteshop, go to an empty folder, initialize an npm project (i.e. npm init), and run
+To install vuilder:
 
 ```
-npm install https://github.com/vitelabs/viteshop.git --save-dev
+npm install @vite/vuilder
 ```
 
 ## Usages

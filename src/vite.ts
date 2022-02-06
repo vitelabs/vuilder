@@ -4,9 +4,10 @@ const { HTTP_RPC } = require("@vite/vitejs-http");
 const { WS_RPC } = require("@vite/vitejs-ws");
 const { IPC_RPC } = require("@vite/vitejs-ipc");
 import {exec, execSync } from 'child_process';
-import * as utils from "./utils";
+import * as viteUtils from "./utils";
 import config from "./vite.config.json";
 import * as compiler from "./compiler";
+import * as legacyCompiler from "./legacyCompiler";
 import {name as packageName} from "../package.json";
 
 let process: any;
@@ -150,3 +151,5 @@ export async function isConfirmed(provider: any, hash?: string) {
 }
 
 export const compile = compiler.compile
+export const compileLegacy = legacyCompiler.compile
+export const utils = viteUtils

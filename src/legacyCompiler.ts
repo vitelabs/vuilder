@@ -1,13 +1,16 @@
 import os from "os";
 import { ChildProcess, spawnSync, exec, execSync } from 'child_process';
 import {Contract} from "./contract"
+import {name as packageName} from "../package.json";
+
+const binPath = `node_modules/${packageName}/bin/`
 
 async function _compile(source: string) {
     const path = `contracts/${source}`;
     try {
       let result = String(
           execSync(
-              `./bin/solppc-0.4.3 --bin --abi ${path}`
+              `${binPath}/solppc-0.4.3 --bin --abi ${path}`
           )
       );
       return parse(result, path);
