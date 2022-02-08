@@ -17,9 +17,10 @@ export async function startLocalNetwork(node: string = 'nightly') {
   const nodeConfig = (config.cfg().nodes as any)[node];
 
   await vnode.init({ name: nodeConfig.name, version: nodeConfig.version });
-  console.log('Node binanry:', nodeConfig.name);
+  const binName = vnode.binName(nodeConfig.name, nodeConfig.version);
+  console.log('Node binanry:', binName);
   exec(
-    `./restart.sh ${nodeConfig.name}`,
+    `./restart.sh ${binName}`,
     {
       cwd: vnode.binPath()
     },
