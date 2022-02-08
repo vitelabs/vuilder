@@ -1,34 +1,33 @@
-import { ViteAPI, wallet} from "@vite/vitejs";
+import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
 const { WS_RPC } = require("@vite/vitejs-ws");
 const { IPC_RPC } = require("@vite/vitejs-ipc");
-import {exec, execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
 import * as viteUtils from "./utils";
-import config from "./vite.config.json";
 import * as compiler from "./compiler";
+import * as config from "./config";
 import * as legacyCompiler from "./legacyCompiler";
-import {name as packageName} from "../package.json";
+import * as vnode from "./node"
 
-let process: any;
 let provider: any;
-let nodeConfig: any;
-
-const binPath = `node_modules/${packageName}/bin/`
 
 export async function startLocalNetwork(node: string = 'nightly') {
   console.log('[Vite] Starting Vite local network...');
-  nodeConfig = (config.nodes as any)[node];
-  console.log('Node binanry:', nodeConfig.name);
-  process = exec(
-    `./restart.sh ${nodeConfig.name}`,
-      {
-          cwd: binPath
-      },
-      (error, stdout, stderr) => {
-        // if(error) console.error(error);
-        // console.log(stdout);
-      }
+  const nodeConfig = (config.cfg().nodes as any)[node];
+
+  await vnode.init({ name: nodeConfig.name, version: nodeConfig.version });
+  const binName = vnode.binName(nodeConfig.name, nodeConfig.version);
+  console.log('Node binanry:', binName);
+  exec(
+    `./restart.sh ${binName}`,
+    {
+      cwd: vnode.binPath()
+    },
+    (error, stdout, stderr) => {
+      // if(error) console.error(error);
+      // console.log(stdout);
+    }
   );
   console.log('[Vite] Waiting for the local network to go live...');
 
@@ -41,13 +40,13 @@ export async function stopLocalNetwork() {
   // process.kill('SIGKILL');
   exec(
     `./shutdown.sh`,
-      {
-          cwd: binPath
-      },
-      (error, stdout, stderr) => {
-        // if(error) console.error(error);
-        // console.log(stdout);
-      }
+    {
+      cwd: vnode.binPath()
+    },
+    (error, stdout, stderr) => {
+      // if(error) console.error(error);
+      // console.log(stdout);
+    }
   );
 }
 
@@ -62,11 +61,10 @@ async function isNetworkUp() {
 
 export function localProvider() {
   if (!provider) {
-    if (!nodeConfig)
-      nodeConfig = config.nodes.nightly;
+    const nodeConfig = config.cfg().nodes.nightly;
     provider = newProvider(nodeConfig.http);
   }
-  
+
   return provider;
 }
 
@@ -150,6 +148,7 @@ export async function isConfirmed(provider: any, hash?: string) {
   }
 }
 
+export const loadViteConfig = config.loadViteConfig
 export const compile = compiler.compile
 export const compileLegacy = legacyCompiler.compile
 export const utils = viteUtils
