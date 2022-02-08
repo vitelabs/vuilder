@@ -5,22 +5,23 @@ const { WS_RPC } = require("@vite/vitejs-ws");
 const { IPC_RPC } = require("@vite/vitejs-ipc");
 import {exec, execSync } from 'child_process';
 import * as viteUtils from "./utils";
-import config from "./vite.config.json";
 import * as compiler from "./compiler";
+import * as config from "./config";
 import * as legacyCompiler from "./legacyCompiler";
+import {init as nodeInit} from "./node"
 import {name as packageName} from "../package.json";
 
-let process: any;
 let provider: any;
-let nodeConfig: any;
 
 const binPath = `node_modules/${packageName}/bin/`
 
 export async function startLocalNetwork(node: string = 'nightly') {
   console.log('[Vite] Starting Vite local network...');
-  nodeConfig = (config.nodes as any)[node];
+  const nodeConfig = (config.cfg().nodes as any)[node];
+
+  await nodeInit({name: nodeConfig.name, version: nodeConfig.version});
   console.log('Node binanry:', nodeConfig.name);
-  process = exec(
+  exec(
     `./restart.sh ${nodeConfig.name}`,
       {
           cwd: binPath
@@ -62,8 +63,7 @@ async function isNetworkUp() {
 
 export function localProvider() {
   if (!provider) {
-    if (!nodeConfig)
-      nodeConfig = config.nodes.nightly;
+    const nodeConfig = config.cfg().nodes.nightly;
     provider = newProvider(nodeConfig.http);
   }
   
@@ -150,6 +150,7 @@ export async function isConfirmed(provider: any, hash?: string) {
   }
 }
 
+export const loadViteConfig = config.loadViteConfig
 export const compile = compiler.compile
 export const compileLegacy = legacyCompiler.compile
 export const utils = viteUtils
