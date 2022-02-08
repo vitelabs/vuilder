@@ -23,7 +23,11 @@ export async function init({
     console.log(`${platform} is not supported`);
     return;
   }
-  const result = execSync(`./init.sh  ${version} ${platform}`, {
+  let shell = "./init.sh";
+  if (version.includes("nightly")) {
+    shell = "./init-nightly.sh"
+  }
+  const result = execSync(`${shell}  ${version} ${platform}`, {
     cwd: binPath(),
     encoding: "utf8",
   });
