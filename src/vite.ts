@@ -1,35 +1,32 @@
-import { ViteAPI, wallet} from "@vite/vitejs";
+import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
 const { WS_RPC } = require("@vite/vitejs-ws");
 const { IPC_RPC } = require("@vite/vitejs-ipc");
-import {exec, execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
 import * as viteUtils from "./utils";
 import * as compiler from "./compiler";
 import * as config from "./config";
 import * as legacyCompiler from "./legacyCompiler";
-import {init as nodeInit} from "./node"
-import {name as packageName} from "../package.json";
+import * as vnode from "./node"
 
 let provider: any;
-
-const binPath = `node_modules/${packageName}/bin/`
 
 export async function startLocalNetwork(node: string = 'nightly') {
   console.log('[Vite] Starting Vite local network...');
   const nodeConfig = (config.cfg().nodes as any)[node];
 
-  await nodeInit({name: nodeConfig.name, version: nodeConfig.version});
+  await vnode.init({ name: nodeConfig.name, version: nodeConfig.version });
   console.log('Node binanry:', nodeConfig.name);
   exec(
     `./restart.sh ${nodeConfig.name}`,
-      {
-          cwd: binPath
-      },
-      (error, stdout, stderr) => {
-        // if(error) console.error(error);
-        // console.log(stdout);
-      }
+    {
+      cwd: vnode.binPath()
+    },
+    (error, stdout, stderr) => {
+      // if(error) console.error(error);
+      // console.log(stdout);
+    }
   );
   console.log('[Vite] Waiting for the local network to go live...');
 
@@ -42,13 +39,13 @@ export async function stopLocalNetwork() {
   // process.kill('SIGKILL');
   exec(
     `./shutdown.sh`,
-      {
-          cwd: binPath
-      },
-      (error, stdout, stderr) => {
-        // if(error) console.error(error);
-        // console.log(stdout);
-      }
+    {
+      cwd: vnode.binPath()
+    },
+    (error, stdout, stderr) => {
+      // if(error) console.error(error);
+      // console.log(stdout);
+    }
   );
 }
 
@@ -66,7 +63,7 @@ export function localProvider() {
     const nodeConfig = config.cfg().nodes.nightly;
     provider = newProvider(nodeConfig.http);
   }
-  
+
   return provider;
 }
 

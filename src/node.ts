@@ -2,7 +2,7 @@ import { exec, execSync } from "child_process";
 import { name as packageName } from "../package.json";
 import fs from "fs";
 
-const binPath = `node_modules/${packageName}/bin/`;
+const defaultBinPath = `node_modules/${packageName}/bin/`;
 // const binPath = `bin/`;
 
 export async function init({
@@ -14,8 +14,8 @@ export async function init({
   version: String;
   type?: String;
 }) {
-  let binName = `${name}-${version}`;
-  if (fs.existsSync(binPath + binName)) {
+  let binFileName = await binName(name, version);
+  if (fs.existsSync(binPath() + binFileName)) {
     return;
   }
   const platform = process.platform;
@@ -24,12 +24,20 @@ export async function init({
     return;
   }
   const result = execSync(`./init.sh  ${version} ${platform}`, {
-    cwd: binPath,
+    cwd: binPath(),
     encoding: "utf8",
   });
   console.log(result);
 }
 
+export function binName(name: String, version: String) {
+  const binName = `${name}-${version}`;
+  return binName;
+}
+
+export function binPath() {
+  return defaultBinPath;
+}
 // init({ version: "v2.11.1" }).then(function() {
 //   console.log("done");
 // });
