@@ -1,6 +1,6 @@
 {
     "name": "@vite/vuilder",
-    "version": "0.1.0-alpha.4",
+    "version": "0.1.0-alpha.7",
     "description": "Vuilder Kit",
     "main": "lib/src/vite.js",
     "publishConfig": {
@@ -30,7 +30,7 @@
         "ts-node": "^9.0.0"
     },
     "dependencies": {
-        "@vite/solppc": "^0.8.1-alpha.4",
+        "@vite/solppc": "^0.8.0-alpha.1",
         "@vite/vitejs": "^2.3.17",
         "@vite/vitejs-accountblock": "^2.3.17",
         "@vite/vitejs-http": "^2.3.17",
