@@ -17,14 +17,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vitelabs/viteshop.git"
+    "url": "git+https://github.com/vitelabs/vuilder.git"
   },
   "author": "ViteLabs",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vitelabs/viteshop/issues"
+    "url": "https://github.com/vitelabs/vuilder/issues"
   },
-  "homepage": "https://github.com/vitelabs/viteshop",
+  "homepage": "https://github.com/vitelabs/vuilder",
   "devDependencies": {
     "typescript": "^4.5.5",
     "ts-node": "^9.0.0"
