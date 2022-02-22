@@ -1,8 +1,12 @@
 {
   "name": "@vite/vuilder",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0-alpha.9",
   "description": "Vuilder Kit",
-  "main": "src/vite.ts",
+  "main": "lib/vite.js",
+  "types": "lib/vite.ts",
+  "files": [
+    "/lib"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -20,7 +24,7 @@
     "url": "git+https://github.com/vitelabs/vuilder.git"
   },
   "bin": {
-    "vuilder": "src/cli.ts"
+    "vuilder": "lib/cli.js"
   },
   "author": "ViteLabs",
   "license": "ISC",

@@ -1,5 +1,4 @@
 import { exec, execSync } from "child_process";
-import { name as packageName } from "../package.json";
 import fs from "fs";
 import path from "path";
 import { ViteAPI } from "@vite/vitejs";
