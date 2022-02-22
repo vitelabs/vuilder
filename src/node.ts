@@ -1,8 +1,12 @@
 import { exec, execSync } from "child_process";
 import { name as packageName } from "../package.json";
 import fs from "fs";
+import path from "path";
+import { ViteAPI } from "@vite/vitejs";
+const { HTTP_RPC } = require("@vite/vitejs-http");
+import * as viteUtils from "./utils";
 
-const defaultBinPath = `node_modules/${packageName}/bin/`;
+const defaultBinPath = path.join(path.dirname(__dirname), "bin");
 // const binPath = `bin/`;
 
 export async function init({
@@ -15,7 +19,7 @@ export async function init({
   type?: String;
 }) {
   let binFileName = await binName(name, version);
-  if (fs.existsSync(binPath() + binFileName)) {
+  if (fs.existsSync(path.join(binPath(), binFileName))) {
     return;
   }
   const platform = process.platform;
@@ -25,7 +29,7 @@ export async function init({
   }
   let shell = "./init.sh";
   if (version.includes("nightly")) {
-    shell = "./init-nightly.sh"
+    shell = "./init-nightly.sh";
   }
   const result = execSync(`${shell}  ${version} ${platform}`, {
     cwd: binPath(),
@@ -42,6 +46,59 @@ export function binName(name: String, version: String) {
 export function binPath() {
   return defaultBinPath;
 }
-// init({ version: "v2.11.1" }).then(function() {
-//   console.log("done");
-// });
+
+export class Node {
+  httpUrl: string;
+  binPath: string;
+  binName: string;
+  provider?: any;
+
+  constructor(url: string, binPath: string, binName: string) {
+    this.httpUrl = url;
+    this.binPath = binPath;
+    this.binName = binName;
+    this.provider = new ViteAPI(new HTTP_RPC(url), () => {
+      console.log("New Vite provider from", url);
+    });
+  }
+
+  async start() {
+    console.log("[Vite] Starting Vite local node...");
+
+    console.log("Node binary:", this.binPath);
+    exec(
+      `./restart.sh ${this.binName}`,
+      {
+        cwd: this.binPath,
+      },
+      (error, stdout, stderr) => {
+        // if (error) console.error(error);
+        // console.log(stdout);
+      }
+    );
+    console.log("[Vite] Waiting for the local node to go live...");
+
+    await viteUtils.waitFor(this.isUp, "Wait for local node", 1000);
+    console.log("[Vite] Vite local node is live!");
+  }
+
+  isUp = async (): Promise<boolean> => {
+    const h = await this.provider.request("ledger_getSnapshotChainHeight");
+    return h && h > 0;
+  };
+
+  async stop() {
+    console.log("[Vite] Stopping Vite local node...");
+    // process.kill('SIGKILL');
+    exec(
+      `./shutdown.sh`,
+      {
+        cwd: this.binPath,
+      },
+      (error, stdout, stderr) => {
+        // if (error) console.error(error);
+        // console.log(stdout);
+      }
+    );
+  }
+}
