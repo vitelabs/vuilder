@@ -72,8 +72,8 @@ export class Node {
         cwd: this.binPath,
       },
       (error, stdout, stderr) => {
-        if (error) console.error(error);
-        console.log(stdout);
+        // if (error) console.error(error);
+        // console.log(stdout);
       }
     );
     console.log("[Vite] Waiting for the local node to go live...");
@@ -96,8 +96,8 @@ export class Node {
         cwd: this.binPath,
       },
       (error, stdout, stderr) => {
-        if (error) console.error(error);
-        console.log(stdout);
+        // if (error) console.error(error);
+        // console.log(stdout);
       }
     );
   }
