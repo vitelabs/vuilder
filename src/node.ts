@@ -21,6 +21,7 @@ export async function init({
   if (fs.existsSync(path.join(binPath(), binFileName))) {
     return;
   }
+  console.log(path.join(binPath(), binFileName));
   const platform = process.platform;
   if (!["linux", "darwin"].includes(platform)) {
     console.log(`${platform} is not supported`);
@@ -71,8 +72,8 @@ export class Node {
         cwd: this.binPath,
       },
       (error, stdout, stderr) => {
-        // if (error) console.error(error);
-        // console.log(stdout);
+        if (error) console.error(error);
+        console.log(stdout);
       }
     );
     console.log("[Vite] Waiting for the local node to go live...");
@@ -95,8 +96,8 @@ export class Node {
         cwd: this.binPath,
       },
       (error, stdout, stderr) => {
-        // if (error) console.error(error);
-        // console.log(stdout);
+        if (error) console.error(error);
+        console.log(stdout);
       }
     );
   }
