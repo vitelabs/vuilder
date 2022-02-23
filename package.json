@@ -5,8 +5,8 @@
   "main": "lib/vite.js",
   "types": "lib/vite.ts",
   "files": [
-    "/lib",
-    "/bin"
+    "lib",
+    "bin"
   ],
   "publishConfig": {
     "access": "public"
