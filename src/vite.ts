@@ -1,9 +1,6 @@
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
-const { WS_RPC } = require("@vite/vitejs-ws");
-const { IPC_RPC } = require("@vite/vitejs-ipc");
-import { exec, execSync } from "child_process";
 import * as viteUtils from "./utils";
 import * as compiler from "./compiler";
 import * as config from "./config";
@@ -23,7 +20,7 @@ export async function startLocalNetwork(cfg: any) {
   return localNode;
 }
 
-export function newProvider(url: string) {
+export function newProvider(url: string): any {
   const httpProvider = new ViteAPI(new HTTP_RPC(url), () => {
     console.log("New Vite provider from", url);
   });
@@ -65,7 +62,7 @@ export async function getAccountHeight(
 export async function getQuota(provider: any, to: string) {
   return provider.request("contract_getQuotaByAccount", to);
 }
-                 
+
 export async function getAccountBlock(provider: any, hash?: string) {
   return provider.request("ledger_getAccountBlockByHash", hash);
 }
