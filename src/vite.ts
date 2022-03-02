@@ -1,84 +1,33 @@
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
-const { WS_RPC } = require("@vite/vitejs-ws");
-const { IPC_RPC } = require("@vite/vitejs-ipc");
-import { exec, execSync } from 'child_process';
 import * as viteUtils from "./utils";
 import * as compiler from "./compiler";
 import * as config from "./config";
 import * as legacyCompiler from "./legacyCompiler";
-import * as vnode from "./node"
+import * as vnode from "./node";
 
-let provider: any;
+export async function startLocalNetwork(cfg: any) {
+  console.log("[Vite] Starting Vite local node...");
+  const nodeCfg = (cfg.nodes as any)[cfg.defaultNode];
 
-export async function startLocalNetwork(node: string = 'nightly') {
-  console.log('[Vite] Starting Vite local network...');
-  const nodeConfig = (config.cfg().nodes as any)[node];
+  await vnode.init({ name: nodeCfg.name, version: nodeCfg.version });
+  const binName = vnode.binName(nodeCfg.name, nodeCfg.version);
+  const binPath = vnode.binPath();
 
-  await vnode.init({ name: nodeConfig.name, version: nodeConfig.version });
-  const binName = vnode.binName(nodeConfig.name, nodeConfig.version);
-  console.log('Node binanry:', binName);
-  exec(
-    `./restart.sh ${binName}`,
-    {
-      cwd: vnode.binPath()
-    },
-    (error, stdout, stderr) => {
-      // if(error) console.error(error);
-      // console.log(stdout);
-    }
-  );
-  console.log('[Vite] Waiting for the local network to go live...');
-
-  await waitNetworkUp();
-  console.log('[Vite] Vite local network is live!');
+  const localNode = new vnode.Node(nodeCfg.http, binPath, binName);
+  await localNode.start();
+  return localNode;
 }
 
-export async function stopLocalNetwork() {
-  console.log('[Vite] Stopping Vite local network...');
-  // process.kill('SIGKILL');
-  exec(
-    `./shutdown.sh`,
-    {
-      cwd: vnode.binPath()
-    },
-    (error, stdout, stderr) => {
-      // if(error) console.error(error);
-      // console.log(stdout);
-    }
-  );
-}
-
-async function waitNetworkUp() {
-  await utils.waitFor(isNetworkUp, 'Wait for local network', 1000);
-}
-
-async function isNetworkUp() {
-  let h = await localProvider().request('ledger_getSnapshotChainHeight');
-  return h && (h > 0);
-}
-
-export function localProvider() {
-  if (!provider) {
-    const nodeConfig = config.cfg().nodes.nightly;
-    provider = newProvider(nodeConfig.http);
-  }
-
-  return provider;
-}
-
-export function newProvider(url: string) {
-  // const ipcProvider = new ViteAPI(new IPC_RPC("~/code/contracts/bin/ledger/devdata/gvite.ipc", 10000), () => {
-  //     console.log("New Vite provider from", url);
-  //   });
+export function newProvider(url: string): any {
   const httpProvider = new ViteAPI(new HTTP_RPC(url), () => {
     console.log("New Vite provider from", url);
   });
   return httpProvider;
 }
 
-export function newAccount(mnemonics: string, index: number) {
+export function newAccount(mnemonics: string, index: number, provider: any) {
   const addressObj = wallet.getWallet(mnemonics).deriveAddress(index);
   let a = new UserAccount(addressObj.address);
   a.setPrivateKey(addressObj.privateKey);
@@ -95,7 +44,10 @@ export async function getSnapshotHeight(provider: any) {
   return provider.request("ledger_getSnapshotChainHeight");
 }
 
-export async function getAccountHeight(provider: any, to: string): Promise<Number> {
+export async function getAccountHeight(
+  provider: any,
+  to: string
+): Promise<Number> {
   return provider
     .request("ledger_getLatestAccountBlock", to)
     .then((block: any) => {
@@ -115,7 +67,11 @@ export async function getAccountBlock(provider: any, hash?: string) {
   return provider.request("ledger_getAccountBlockByHash", hash);
 }
 
-export async function getBalance(provider: any, address: string, tokenId: string = 'tti_5649544520544f4b454e6e40') {
+export async function getBalance(
+  provider: any,
+  address: string,
+  tokenId: string = "tti_5649544520544f4b454e6e40"
+) {
   const result = await provider.getBalanceInfo(address);
   const balance = result.balance.balanceInfoMap[tokenId].balance;
   return balance;
@@ -148,7 +104,7 @@ export async function isConfirmed(provider: any, hash?: string) {
   }
 }
 
-export const loadViteConfig = config.loadViteConfig
-export const compile = compiler.compile
-export const compileLegacy = legacyCompiler.compile
-export const utils = viteUtils
+export const loadViteConfig = config.loadViteConfig;
+export const compile = compiler.compile;
+export const compileLegacy = legacyCompiler.compile;
+export const utils = viteUtils;
