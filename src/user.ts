@@ -1,4 +1,4 @@
-import { Account } from "@vite/vitejs-accountblock";
+import { Account, createAccountBlock } from "@vite/vitejs-accountblock";
 import * as utils from "./utils";
 import * as vite from "./vite";
 
