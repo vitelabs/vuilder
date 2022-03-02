@@ -63,7 +63,7 @@ async function tearDown(vite: any) {
   console.log("Test environment cleared.");
 }
 
-async function main(argv: any) {
+async function runTest(argv: any) {
   const viteCfg = parseConfig(argv);
   const vite = await v.startLocalNetwork(viteCfg);
   await setup(vite);
@@ -75,13 +75,30 @@ async function main(argv: any) {
   await tearDown(vite);
 }
 
+async function runCompile(argv: any) {
+  // todo print to .artifacts
+  argv._.slice(1).forEach(async (file: string) => {
+    const compiledContracts= await v.compile(file);
+    for (const key in compiledContracts) {
+
+      console.log(compiledContracts[key].name);
+      console.log(JSON.stringify(compiledContracts[key].abi));
+      console.log(compiledContracts[key].byteCode);
+      console.log("----------------------------------");
+    }
+  });
+}
+
 require("yargs/yargs")(process.argv.slice(2))
   .command(["test"], "run test", {}, async (argv: any) => {
-    await main(argv);
+    await runTest(argv);
   })
   .command(["node"], "run node", {}, async (argv: any) => {
     const viteCfg = parseConfig(argv);
     const vite = await v.startLocalNetwork(viteCfg);
+  })
+  .command(["compile"], "run compile", {}, async (argv: any) => {
+    await runCompile(argv);
   })
   .demandCommand()
   .help().argv;
