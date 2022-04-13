@@ -20,16 +20,16 @@ npm run build
 ## CLI
 
 ```
-node ./lib/cli.js --help
+npx vuilder <command>
 ```
 
 ```
-cli.js <command>
+vuilder <command>
 
 Commands:
-  cli.js test     run test
-  cli.js node     run node
-  cli.js compile  run compile
+  vuilder test     run test
+  vuilder node     run node
+  vuilder compile  run compile
 
 Options:
   --version  Show version number                                       [boolean]
@@ -45,5 +45,44 @@ npm install @vite/vuilder
 ```
 
 ## Usages
+
+### CLI: Run tests
+
+Runs all tests based on this pattern: `./test/**/*.spec.ts`
+
+```
+npx vuilder test
+```
+
+### CLI: Start a local node
+
+Starts a local node with an optional parameter for configuration purposes.
+
+```
+npx vuilder node <config.json>
+```
+
+```json
+{
+  "nodes": {
+    "latest": {
+      "name": "gvite",
+      "version": "v2.11.2-rc1",
+      "http": "http://127.0.0.1:23456"
+    }
+  },
+  "defaultNode": "latest"
+}
+```
+
+### CLI: Compile a contract
+
+Compiles a contract located in the `contracts` folder.
+
+```
+npx vuilder compile <filename.solpp>
+```
+
+### Other
 
 TODO
