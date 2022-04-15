@@ -13,7 +13,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "test:compiler": "mocha -r ts-node/register test/compiler.spec.ts"
   },
   "keywords": [
     "vite",
@@ -34,7 +35,12 @@
     "url": "https://github.com/vitelabs/vuilder/issues"
   },
   "homepage": "https://github.com/vitelabs/vuilder",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.3.1",
+    "@types/chai-string": "^1.4.2",
+    "chai": "^4.3.6",
+    "chai-string": "^1.5.0"
+  },
   "dependencies": {
     "@types/mocha": "^9.1.0",
     "@vite/solppc": "^0.8.0-alpha.3",

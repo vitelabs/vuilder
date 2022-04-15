@@ -1,3 +1,14 @@
+export function isString(value: any): boolean {
+  return typeof value === 'string' || value instanceof String;
+}
+
+export function isNullOrWhitespace(value: any): boolean {
+  if (!isString(value)) {
+    return true;
+  } else {
+    return value === null || value === undefined || value.trim() === '';
+  }
+}
 
 export function sleep(ms: number) {
   return new Promise((resolve) => {

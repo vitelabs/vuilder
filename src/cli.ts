@@ -78,13 +78,16 @@ async function runTest(argv: any) {
 async function runCompile(argv: any) {
   // todo print to .artifacts
   argv._.slice(1).forEach(async (file: string) => {
-    const compiledContracts= await v.compile(file);
-    for (const key in compiledContracts) {
-
-      console.log(compiledContracts[key].name);
-      console.log(JSON.stringify(compiledContracts[key].abi));
-      console.log(compiledContracts[key].byteCode);
-      console.log("----------------------------------");
+    try {
+      const compiledContracts = await v.compile(file);
+      for (const key in compiledContracts) {
+        console.log(compiledContracts[key].name);
+        console.log(JSON.stringify(compiledContracts[key].abi));
+        console.log(compiledContracts[key].byteCode);
+        console.log("----------------------------------");
+      }
+    } catch (error) {
+      console.log(error);
     }
   });
 }
