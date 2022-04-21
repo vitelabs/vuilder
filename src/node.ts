@@ -23,15 +23,31 @@ export async function init({
   }
   console.log(path.join(binPath(), binFileName));
   const platform = process.platform;
-  if (!["linux", "darwin"].includes(platform)) {
-    console.log(`${platform} is not supported`);
+  const arch = process.arch;
+  let environment;
+  switch (platform) {
+    case "linux":
+      if (arch === "arm64") {
+        environment = `${platform}-${arch}`;
+      } else {
+        environment = platform;
+      }
+      break;
+    case "darwin":
+      environment = platform;
+      break;
+    default:
+      break;
+  }
+  if (viteUtils.isNullOrWhitespace(environment)) {
+    console.log(`${platform}-${arch} is not supported`);
     return;
   }
   let shell = "./init.sh";
   if (version.includes("nightly")) {
     shell = "./init-nightly.sh";
   }
-  const result = execSync(`${shell}  ${version} ${platform}`, {
+  const result = execSync(`${shell} ${version} ${environment}`, {
     cwd: binPath(),
     encoding: "utf8",
   });
