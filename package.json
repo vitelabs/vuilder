@@ -44,7 +44,7 @@
   "dependencies": {
     "@types/mocha": "^9.1.0",
     "@vite/solppc": "^0.8.0-alpha.3",
-    "@vite/vitejs": "^2.3.18",
+    "@vite/vitejs": "^2.3.19-alpha.2",
     "@vite/vitejs-accountblock": "^2.3.18",
     "@vite/vitejs-http": "^2.3.18",
     "@vite/vitejs-ipc": "^2.3.18",
