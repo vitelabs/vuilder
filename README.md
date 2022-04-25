@@ -17,6 +17,12 @@ You can use [nvm](https://github.com/nvm-sh/nvm) to easily switch between node v
 npm run build
 ```
 
+Make the vuilder command available to be executed with npx:
+
+```
+npm link
+```
+
 ## CLI
 
 ```
@@ -52,6 +58,12 @@ Runs all tests based on this pattern: `./test/**/*.spec.ts`
 
 ```
 npx vuilder test
+```
+
+Run specific tests by providing one or multiple paths (separated by space):
+
+```
+npx vuilder test ./test/compiler.spec.ts ./test/vite.spec.ts
 ```
 
 ### CLI: Start a local node
