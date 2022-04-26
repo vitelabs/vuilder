@@ -49,10 +49,17 @@ async function test(files: any[], cfg: any) {
   const testFailures = await new Promise<number>((resolve) => {
     mocha.run(resolve);
   });
-
   mocha.dispose();
 
   return testFailures;
+}
+
+async function testWithCatch(files: any[], cfg: any) {
+  try {
+    await test(files, cfg);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function setup(vite: any) {
@@ -65,10 +72,16 @@ async function tearDown(vite: any) {
 
 async function runTest(argv: any) {
   const viteCfg = parseConfig(argv);
+  const targetFiles = testTargetFiles(argv);
+  if (viteCfg.defaultNode === "none") {
+    await testWithCatch(targetFiles, viteCfg);
+    return;
+  }
+
   const vite = await v.startLocalNetwork(viteCfg);
   await setup(vite);
   try {
-    await test(testTargetFiles(argv), viteCfg);
+    await testWithCatch(targetFiles, viteCfg);
   } catch (error) {
     console.error(error);
   }
@@ -99,7 +112,7 @@ require("yargs/yargs")(process.argv.slice(2))
   .command(["node"], "run node", {}, async (argv: any) => {
     const viteCfg = parseConfig(argv);
     const vite = await v.startLocalNetwork(viteCfg);
-    process.on('SIGINT', async function () {
+    process.on("SIGINT", async function() {
       console.log("Caught interrupt signal");
       await vite.stop();
       console.log("Node stopped");
