@@ -1,8 +1,7 @@
-import { Account } from "@vite/vitejs-accountblock";
-export declare class UserAccount extends Account {
-    _provider: any;
-    _setProvider(provider: any): void;
+import { accountBlock } from "@vite/vitejs";
+export declare class UserAccount extends accountBlock.Account {
+    constructor(address: string, provider: any);
     balance(tokenId?: string): Promise<string>;
-    sendToken(toAddress: string, amount: string, tokenId?: string, data?: string): Promise<import("@vite/vitejs-accountblock/accountBlock").default>;
+    sendToken(toAddress: string, amount: string, tokenId?: string, data?: string): Promise<any>;
     receiveAll(): Promise<void>;
 }

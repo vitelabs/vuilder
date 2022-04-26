@@ -29,9 +29,9 @@ export function newProvider(url: string): any {
 
 export function newAccount(mnemonics: string, index: number, provider: any) {
   const addressObj = wallet.getWallet(mnemonics).deriveAddress(index);
-  let a = new UserAccount(addressObj.address);
+  let a = new UserAccount(addressObj.address, provider);
   a.setPrivateKey(addressObj.privateKey);
-  a._setProvider(provider);
+  // a._setProvider(provider);
   return a;
 }
 

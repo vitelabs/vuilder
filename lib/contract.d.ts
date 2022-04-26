@@ -24,7 +24,7 @@ export declare class Contract {
         caller?: any;
     }): Promise<any>;
     link(libraries: Object): void;
-    query(methodName: string, params: any[]): Promise<any[] | null>;
+    query(methodName: string, params: any[]): Promise<any>;
     height(): Promise<Number>;
     waitForHeight(height: Number): Promise<void>;
     getPastEvents(eventName: string | undefined, { fromHeight, toHeight }: {
