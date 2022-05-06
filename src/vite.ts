@@ -19,19 +19,13 @@ export async function startLocalNetwork(cfg: any) {
   await localNode.start();
 
   process.on("SIGINT", async function () {
-    console.log("Caught interrupt signal");
     await localNode.stop();
-    console.log("Node stopped");
   });
   process.on("SIGTERM", async function () {
-    console.log("Caught interrupt signal");
     await localNode.stop();
-    console.log("Node stopped");
   });
   process.on("SIGQUIT", async function () {
-    console.log("Caught interrupt signal");
     await localNode.stop();
-    console.log("Node stopped");
   });
   return localNode;
 }

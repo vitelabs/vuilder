@@ -10,6 +10,7 @@ export declare class Node {
     binPath: string;
     binName: string;
     provider?: any;
+    stopped: boolean;
     constructor(url: string, binPath: string, binName: string);
     start(): Promise<void>;
     isUp: () => Promise<boolean>;
