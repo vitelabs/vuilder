@@ -71,7 +71,7 @@ npx vuilder test ./test/compiler.spec.ts ./test/vite.spec.ts
 Starts a local node with an optional parameter for configuration purposes.
 
 ```
-npx vuilder node <config.json>
+npx vuilder node --config <config.json>
 ```
 
 ```json
