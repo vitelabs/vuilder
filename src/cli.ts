@@ -112,11 +112,6 @@ require("yargs/yargs")(process.argv.slice(2))
   .command(["node"], "run node", {}, async (argv: any) => {
     const viteCfg = parseConfig(argv);
     const vite = await v.startLocalNetwork(viteCfg);
-    process.on("SIGINT", async function() {
-      console.log("Caught interrupt signal");
-      await vite.stop();
-      console.log("Node stopped");
-    });
   })
   .command(["compile"], "run compile", {}, async (argv: any) => {
     await runCompile(argv);

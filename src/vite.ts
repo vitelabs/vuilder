@@ -17,6 +17,16 @@ export async function startLocalNetwork(cfg: any) {
 
   const localNode = new vnode.Node(nodeCfg.http, binPath, binName);
   await localNode.start();
+
+  process.on("SIGINT", async function () {
+    await localNode.stop();
+  });
+  process.on("SIGTERM", async function () {
+    await localNode.stop();
+  });
+  process.on("SIGQUIT", async function () {
+    await localNode.stop();
+  });
   return localNode;
 }
 
