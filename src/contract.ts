@@ -1,58 +1,56 @@
-import { constant, abi as abiUtil } from "@vite/vitejs";
+import { constant, abi as abiUtil, ViteAPI, accountBlock } from "@vite/vitejs";
 import * as utils from "./utils";
 import * as vite from "./vite";
 var linker = require("@vite/solppc/linker");
 const { Vite_TokenId } = constant;
 
+type Provider = InstanceType<typeof ViteAPI>;
+
+type Account = InstanceType<typeof accountBlock.Account>;
+
 export class Contract {
-  provider: any;
+  provider?: Provider;
   name: string;
-  byteCode: string;
+  byteCode?: string;
   offchainCode: string;
   abi: any;
-  address: string | undefined;
-  deployer: any;
-  
-  constructor(
-    name: string,
-    byteCode: string,
-    abi: any
-  ) {
+  address?: string;
+  deployer?: Account;
+
+  constructor(name: string, byteCode: string, abi: any) {
     this.name = name;
     this.byteCode = byteCode;
     this.abi = abi;
     this.offchainCode = "";
   }
 
-  setProvider(provider: any): Contract {
+  setProvider(provider: Provider): Contract {
     this.provider = provider;
     return this;
   }
 
-  setDeployer(deployer: any): Contract {
+  setDeployer(deployer: Account): Contract {
     this.deployer = deployer;
     return this;
   }
 
-  async deploy(
-    {
-      responseLatency = 0,
-      quotaMultiplier = 100,
-      randomDegree = 0,
-      params,
-      tokenId,
-      amount,
-      libraries
-    }: {
-      responseLatency?: Number;
-      quotaMultiplier?: Number;
-      randomDegree?: Number;
-      params?: string | Array<string | boolean>;
-      tokenId?: string;
-      amount?: string;
-      libraries?: Object;
-    }
-  ) {
+  async deploy({
+    responseLatency = 0,
+    quotaMultiplier = 100,
+    randomDegree = 0,
+    params,
+    tokenId,
+    amount,
+    libraries,
+  }: {
+    responseLatency?: Number;
+    quotaMultiplier?: Number;
+    randomDegree?: Number;
+    params?: string | Array<string | boolean>;
+    tokenId?: string;
+    amount?: string;
+    libraries?: Object;
+  }) {
     if (!this.deployer) {
       console.error("Can not deploy contract, set a deployer first.");
       return;
@@ -61,10 +59,13 @@ export class Contract {
       console.error("Can not deploy contract, set a Vite provider first.");
       return;
     }
+    if (!this.byteCode) {
+      console.error("Can not deploy contract, set a byteCode first.");
+      return;
+    }
 
     // link libraries
-    if (libraries)
-      this.link(libraries);
+    if (libraries) this.link(libraries);
 
     const deployTransaction = this.deployer.createContract({
       abi: this.abi,
@@ -72,7 +73,7 @@ export class Contract {
       quotaMultiplier: quotaMultiplier.toString(),
       randomDegree: randomDegree.toString(),
       responseLatency: responseLatency.toString(),
-      params: params
+      params: params,
     });
 
     if (tokenId) deployTransaction.tokenId = tokenId;
@@ -80,17 +81,31 @@ export class Contract {
 
     console.log("Sign and send deploy transaction");
     const deployResult = await deployTransaction.autoSend();
-    
-    await utils.waitFor(() => {
-      return vite.isConfirmed(this.provider, deployResult.hash);
-    }, "Wait for confirming deploy request", 1000);
 
-    await utils.waitFor(() => {
-      return vite.isReceived(this.provider, deployResult.hash);
-    }, "Wait for receiving deploy request", 1000);
+    await utils.waitFor(
+      () => {
+        return vite.isConfirmed(this.provider, deployResult.hash);
+      },
+      "Wait for confirming deploy request",
+      1000
+    );
 
-    const sendBlock = await vite.getAccountBlock(this.provider, deployResult.hash);
-    const receiveBlock = await vite.getAccountBlock(this.provider, sendBlock.receiveBlockHash);
+    await utils.waitFor(
+      () => {
+        return vite.isReceived(this.provider, deployResult.hash);
+      },
+      "Wait for receiving deploy request",
+      1000
+    );
+
+    const sendBlock = await vite.getAccountBlock(
+      this.provider,
+      deployResult.hash
+    );
+    const receiveBlock = await vite.getAccountBlock(
+      this.provider,
+      sendBlock.receiveBlockHash
+    );
     if (receiveBlock?.blockType !== 4) {
       throw new Error("Contract deploy failed:" + this.abi.name);
     }
@@ -106,44 +121,61 @@ export class Contract {
     {
       tokenId = Vite_TokenId,
       amount = "0",
-      caller = this.deployer
-    }: { 
-      tokenId?: string; 
+      caller = this.deployer,
+    }: {
+      tokenId?: string;
       amount?: string;
-      caller?: any;
+      caller?: Account;
     }
   ) {
-    const methodAbi = this.abi.find((x: { name: string; type: string; }) => {
+    const methodAbi = this.abi.find((x: { name: string; type: string }) => {
       return x.name === methodName && x.type === "function";
     });
     if (!methodAbi) {
       throw new Error("method not found: " + methodName);
     }
 
-    const block = caller.callContract({
-      abi: methodAbi,
+    if (!this.address) {
+      throw new Error("contract address not exists");
+    }
+
+    const block = caller?.callContract({
       toAddress: this.address,
       params: params,
       tokenId: tokenId,
       amount: amount,
     });
-    block.autoSend();
+    if (block) {
+      block.autoSend();
+    } else {
+      throw new Error("block send fail: " + methodName);
+    }
 
-    await utils.waitFor(() => {
-      return vite.isReceived(this.provider, block.hash);
-    }, "Wait for receiving call request", 1000);
-    
+    await utils.waitFor(
+      () => {
+        return vite.isReceived(this.provider, block.hash);
+      },
+      "Wait for receiving call request",
+      1000
+    );
+
     const sendBlock = await vite.getAccountBlock(this.provider, block.hash);
-    const receiveBlock = await vite.getAccountBlock(this.provider, sendBlock.receiveBlockHash);
- 
-    if(!receiveBlock) {
+    const receiveBlock = await vite.getAccountBlock(
+      this.provider,
+      sendBlock.receiveBlockHash
+    );
+
+    if (!receiveBlock) {
       throw new Error("receive block not found");
     }
-    if (receiveBlock.blockType !== 4 && receiveBlock.blockType !== 5 || !receiveBlock.data) {
+    if (
+      (receiveBlock.blockType !== 4 && receiveBlock.blockType !== 5) ||
+      !receiveBlock.data
+    ) {
       throw new Error("bad recieve block");
     }
     const data = receiveBlock.data;
-    const bytes = Buffer.from(data, 'base64');
+    const bytes = Buffer.from(data, "base64");
     if (bytes.length != 33) {
       throw new Error("bad data in recieve block");
     }
@@ -166,8 +198,8 @@ export class Contract {
     }
   }
 
-  async query(methodName: string, params:any[]) {
-    const methodAbi = this.abi.find((x: { name: string; }) => {
+  async query(methodName: string, params: any[]) {
+    const methodAbi = this.abi.find((x: { name: string }) => {
       return x.name === methodName;
     });
     if (!methodAbi) {
@@ -175,38 +207,35 @@ export class Contract {
     }
 
     let data = abiUtil.encodeFunctionCall(methodAbi, params);
-    let dataBase64 = Buffer.from(data, 'hex').toString('base64');
+    let dataBase64 = Buffer.from(data, "hex").toString("base64");
     let codeBase64;
     if (this.offchainCode && this.offchainCode.length > 0)
-      codeBase64 = Buffer.from(this.offchainCode, 'hex').toString('base64');
+      codeBase64 = Buffer.from(this.offchainCode, "hex").toString("base64");
 
-    while(true) {
-      let result = codeBase64 ? 
-        await this.provider.request("contract_callOffChainMethod", {
-          address: this.address,
-          code: codeBase64,
-          data: dataBase64
-        }) : 
-        await this.provider.request("contract_query", {
-          address: this.address,
-          data: dataBase64
-        });
-        
+    while (true) {
+      let result = codeBase64
+        ? await this.provider?.request("contract_callOffChainMethod", {
+            address: this.address,
+            code: codeBase64,
+            data: dataBase64,
+          })
+        : await this.provider?.request("contract_query", {
+            address: this.address,
+            data: dataBase64,
+          });
+
       // parse result
       if (result) {
-        let resultBytes = Buffer.from(result, 'base64').toString('hex');
+        let resultBytes = Buffer.from(result, "base64").toString("hex");
         let outputs = [];
         for (let i = 0; i < methodAbi.outputs.length; i++) {
-            outputs.push(methodAbi.outputs[i].type);
+          outputs.push(methodAbi.outputs[i].type);
         }
-        return abiUtil.decodeParameters(
-            outputs,
-            resultBytes
-        );
+        return abiUtil.decodeParameters(outputs, resultBytes);
       }
-      console.log('Query failed, try again.');
+      console.log("Query failed, try again.");
       await utils.sleep(500);
-    }    
+    }
   }
 
   async height() {
@@ -214,33 +243,43 @@ export class Contract {
   }
 
   async waitForHeight(height: Number) {
-    process.stdout.write('Wait for account height [' + height + '] ');
-    while(true) {
+    process.stdout.write("Wait for account height [" + height + "] ");
+    while (true) {
       let h = await this.height();
-      process.stdout.write('.');
+      process.stdout.write(".");
       if (h >= height) break;
       await utils.sleep(1000);
     }
-    console.log(' OK');
+    console.log(" OK");
   }
 
-  async getPastEvents(eventName: string = 'allEvents', {fromHeight = 0, toHeight = 0}:{
-    filter?: Object,
-    fromHeight?: Number,
-    toHeight?: Number
-  }) {
+  async getPastEvents(
+    eventName: string = "allEvents",
+    {
+      fromHeight = 0,
+      toHeight = 0,
+    }: {
+      filter?: Object;
+      fromHeight?: Number;
+      toHeight?: Number;
+    }
+  ) {
     let result: any[] = [];
-    let logs = await this.provider.request("ledger_getVmLogsByFilter",
-      {
-        "addressHeightRange":{
-          [this.address!]:{
-            "fromHeight": fromHeight.toString(),
-            "toHeight": toHeight.toString()
-          }
-      }
+    let logs = await this.provider?.request("ledger_getVmLogsByFilter", {
+      addressHeightRange: {
+        [this.address!]: {
+          fromHeight: fromHeight.toString(),
+          toHeight: toHeight.toString(),
+        },
+      },
     });
     // console.log(logs);
-    const filteredAbi = eventName === 'allEvents' ? this.abi : this.abi.filter((a: any) => {return a.name === eventName;});
+    const filteredAbi =
+      eventName === "allEvents"
+        ? this.abi
+        : this.abi.filter((a: any) => {
+            return a.name === eventName;
+          });
 
     if (logs) {
       for (let log of logs) {
@@ -250,43 +289,42 @@ export class Contract {
           let signature = abiUtil.encodeLogSignature(abiItem);
           // find the abi by event signature, it is not working for anonymous events.
           // @TODO: parse anonymous events after updating the Vite RPC
-          if (abiItem.type === 'event' && signature === topics[0]) { 
+          if (abiItem.type === "event" && signature === topics[0]) {
             let dataHex;
             if (vmLog.data) {
-              dataHex = Buffer.from(vmLog.data, 'base64').toString('hex');
+              dataHex = Buffer.from(vmLog.data, "base64").toString("hex");
             }
-            let returnValues = abiUtil.decodeLog(
-              abiItem,
-              dataHex,
-              topics
-            );
+            let returnValues = abiUtil.decodeLog(abiItem, dataHex, topics);
             let item = {
-                returnValues: returnValues,
-                event: abiItem.name,
-                raw: {
-                  data: dataHex,
-                  topics: topics
-                },
-                signature: signature,
-                accountBlockHeight: log.accountBlockHeight,
-                accountBlockHash: log.accountBlockHash,
-                address: log.address
+              returnValues: returnValues,
+              event: abiItem.name,
+              raw: {
+                data: dataHex,
+                topics: topics,
+              },
+              signature: signature,
+              accountBlockHeight: log.accountBlockHeight,
+              accountBlockHash: log.accountBlockHash,
+              address: log.address,
             };
             result.push(item);
             break;
           }
         }
-      };
+      }
     }
     return result;
   }
 
-  async balance(tokenId: string = 'tti_5649544520544f4b454e6e40'): Promise<string> {
-    const result = await this.provider.getBalanceInfo(this.address);
-    return result?.balance?.balanceInfoMap?.[tokenId]?.balance || '0';
+  async balance(
+    tokenId: string = "tti_5649544520544f4b454e6e40"
+  ): Promise<string> {
+    if (this.address) {
+      const result = await this.provider?.getBalanceInfo(this.address);
+      const balanceInfo: any = result?.balance;
+      return balanceInfo.balanceInfoMap?.[tokenId].balance || "0";
+    } else {
+      throw new Error("address not exist");
+    }
   }
 }
-
-
-
-

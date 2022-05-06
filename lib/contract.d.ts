@@ -1,15 +1,18 @@
+import { ViteAPI, accountBlock } from "@vite/vitejs";
+declare type Provider = InstanceType<typeof ViteAPI>;
+declare type Account = InstanceType<typeof accountBlock.Account>;
 export declare class Contract {
-    provider: any;
+    provider?: Provider;
     name: string;
-    byteCode: string;
+    byteCode?: string;
     offchainCode: string;
     abi: any;
-    address: string | undefined;
-    deployer: any;
+    address?: string;
+    deployer?: Account;
     constructor(name: string, byteCode: string, abi: any);
-    setProvider(provider: any): Contract;
-    setDeployer(deployer: any): Contract;
-    deploy({ responseLatency, quotaMultiplier, randomDegree, params, tokenId, amount, libraries }: {
+    setProvider(provider: Provider): Contract;
+    setDeployer(deployer: Account): Contract;
+    deploy({ responseLatency, quotaMultiplier, randomDegree, params, tokenId, amount, libraries, }: {
         responseLatency?: Number;
         quotaMultiplier?: Number;
         randomDegree?: Number;
@@ -18,19 +21,20 @@ export declare class Contract {
         amount?: string;
         libraries?: Object;
     }): Promise<this | undefined>;
-    call(methodName: string, params: any[], { tokenId, amount, caller }: {
+    call(methodName: string, params: any[], { tokenId, amount, caller, }: {
         tokenId?: string;
         amount?: string;
-        caller?: any;
+        caller?: Account;
     }): Promise<any>;
     link(libraries: Object): void;
     query(methodName: string, params: any[]): Promise<any>;
     height(): Promise<Number>;
     waitForHeight(height: Number): Promise<void>;
-    getPastEvents(eventName: string | undefined, { fromHeight, toHeight }: {
+    getPastEvents(eventName: string | undefined, { fromHeight, toHeight, }: {
         filter?: Object;
         fromHeight?: Number;
         toHeight?: Number;
     }): Promise<any[]>;
     balance(tokenId?: string): Promise<string>;
 }
+export {};

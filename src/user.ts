@@ -1,13 +1,14 @@
-import { accountBlock} from "@vite/vitejs";
+import { accountBlock } from "@vite/vitejs";
 import * as utils from "./utils";
 import * as vite from "./vite";
 
 export class UserAccount extends accountBlock.Account {
-    // _provider: any;
+    _provider: any;
 
     constructor(address: string, provider: any) {
         super(address);
         this.setProvider(provider);
+        this._provider = provider;
     }
     // @todo: hack the private member provider in the base class
     // _setProvider(provider: any) {
@@ -16,7 +17,7 @@ export class UserAccount extends accountBlock.Account {
     // }
 
     async balance(tokenId: string = 'tti_5649544520544f4b454e6e40'): Promise<string> {
-        const result = await this.provider.getBalanceInfo(this.address);
+        const result = await this._provider.getBalanceInfo(this.address);
         return result?.balance?.balanceInfoMap?.[tokenId]?.balance || '0';
     }
 
@@ -24,13 +25,13 @@ export class UserAccount extends accountBlock.Account {
         const block = this.send({ toAddress: toAddress, tokenId: tokenId, amount: amount, data: data});
         await block.autoSend();
         await utils.waitFor(() => {
-            return vite.isConfirmed(this.provider, block.hash);
+            return vite.isConfirmed(this._provider, block.hash);
         }, "Wait for send transaction to be confirmed", 1000);
         return block;
     }
 
     async receiveAll() {
-        const blocks = await this.provider.request(
+        const blocks = await this._provider.request(
             "ledger_getUnreceivedBlocksByAddress",
             this.address,
             0,
@@ -41,7 +42,7 @@ export class UserAccount extends accountBlock.Account {
                 // console.log('receive', block.hash);
                 const receiveBlock = await this.receive({sendBlockHash: block.hash}).autoSend();
                 await utils.waitFor(() => {
-                    return vite.isConfirmed(this.provider, receiveBlock.hash);
+                    return vite.isConfirmed(this._provider, receiveBlock.hash);
                 }, "Wait for receive transaction to be confirmed", 1000);
             }
         }
