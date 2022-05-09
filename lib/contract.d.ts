@@ -18,6 +18,7 @@ export declare class Contract {
         amount?: string;
         libraries?: Object;
     }): Promise<this | undefined>;
+    attach(address: string): Promise<void>;
     call(methodName: string, params: any[], { tokenId, amount, caller }: {
         tokenId?: string;
         amount?: string;

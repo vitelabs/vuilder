@@ -100,6 +100,10 @@ export class Contract {
     return this;
   }
 
+  async attach(address: string){
+    this.address = address;
+  }
+
   async call(
     methodName: string,
     params: any[],
