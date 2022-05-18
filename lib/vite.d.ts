@@ -18,3 +18,4 @@ export declare const loadViteConfig: typeof config.loadViteConfig;
 export declare const compile: typeof compiler.compile;
 export declare const compileLegacy: (source: string) => Promise<any>;
 export declare const utils: typeof viteUtils;
+//# sourceMappingURL=vite.d.ts.map

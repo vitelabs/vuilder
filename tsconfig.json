@@ -1,22 +1,19 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "target": "es2016",
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "outDir": "lib",
+    "outDir": "./lib/",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "declaration":true
+    "rootDir": "./src"
   },
-  "include": [
-    "src/**/*"
-],
-"exclude": [
-    "node_modules",
-    "src/**/dist/*",
-    "src/**/distSrc/*"
-]
+  "include": ["./src/*"],
+  "exclude": ["node_modules"]
 }

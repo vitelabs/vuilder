@@ -16,3 +16,4 @@ export declare class Node {
     isUp: () => Promise<boolean>;
     stop(): Promise<void>;
 }
+//# sourceMappingURL=node.d.ts.map

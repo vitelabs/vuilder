@@ -35,3 +35,4 @@ export declare class Contract {
     }): Promise<any[]>;
     balance(tokenId?: string): Promise<string>;
 }
+//# sourceMappingURL=contract.d.ts.map
