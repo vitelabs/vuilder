@@ -2,8 +2,8 @@
   "name": "@vite/vuilder",
   "version": "0.1.0-alpha.14",
   "description": "Vuilder Kit",
-  "main": "lib/vite.js",
-  "types": "lib/vite.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib",
     "bin"

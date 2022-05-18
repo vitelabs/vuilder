@@ -1,7 +1,4 @@
 import { UserAccount } from "./user";
-import * as viteUtils from "./utils";
-import * as compiler from "./compiler";
-import * as config from "./config";
 import * as vnode from "./node";
 export declare function startLocalNetwork(cfg: any): Promise<vnode.Node>;
 export declare function newProvider(url: string): any;
@@ -14,8 +11,4 @@ export declare function getAccountBlock(provider: any, hash?: string): Promise<a
 export declare function getBalance(provider: any, address: string, tokenId?: string): Promise<any>;
 export declare function isReceived(provider: any, hash?: string): Promise<boolean>;
 export declare function isConfirmed(provider: any, hash?: string): Promise<boolean>;
-export declare const loadViteConfig: typeof config.loadViteConfig;
-export declare const compile: typeof compiler.compile;
-export declare const compileLegacy: (source: string) => Promise<any>;
-export declare const utils: typeof viteUtils;
 //# sourceMappingURL=vite.d.ts.map
