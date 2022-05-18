@@ -100,6 +100,10 @@ export class Contract {
     return this;
   }
 
+  async attach(address: string){
+    this.address = address;
+  }
+
   async call(
     methodName: string,
     params: any[],
@@ -151,9 +155,9 @@ export class Contract {
     const errorCode = bytes[32];
     switch (errorCode) {
       case 1:
-        throw new Error("revert"); // @todo: need error descriptions and debug info from RPC
+        throw new Error(`revert, methodName: ${methodName}`); // @todo: need error descriptions and debug info from RPC
       case 2:
-        throw new Error("maximum call stack size exceeded");
+        throw new Error(`maximum call stack size exceeded, methodName: ${methodName}`);
     }
 
     return receiveBlock;
