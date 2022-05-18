@@ -12,6 +12,7 @@
     "outDir": "./lib/",
     "sourceMap": true,
     "resolveJsonModule": true,
+    "moduleResolution": "node",
     "rootDir": "./src"
   },
   "include": ["./src/*"],
