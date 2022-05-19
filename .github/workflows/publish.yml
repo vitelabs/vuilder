@@ -21,8 +21,17 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - name: 'change version'
-        uses: reedyuk/npm-version@1.1.1
+      - name: change version
+        run: npm version ${{ github.event.inputs.version }} --git-tag-version=false
+      - name: set version
+        id: step0
+        run: |
+          version=$(node --eval="process.stdout.write(require('./package.json').version)")
+          echo "::set-output name=version::$(version)"
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
         with:
-          version: '${{ github.event.inputs.version }}'
-          git-tag-version: 'true'
+          message: "release ${{ github.event.inputs.tag }}"
+          add: "package.json"
+          tag: '${{ steps.step0.outputs.version }}'
+
