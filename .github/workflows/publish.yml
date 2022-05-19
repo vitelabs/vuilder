@@ -1,6 +1,15 @@
 name: Publish Package to npmjs
 on:
    workflow_dispatch:
+      inputs:
+         version:
+           description: "version"
+           required: true
+           default: "prerelease"
+         preid:
+           description: "version preid"
+           required: false
+           default: "alpha"
 #   push:
 #     branches:
 #       - master
@@ -16,7 +25,29 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm version patch
+      - name: change version
+        run: npm version ${{ github.event.inputs.version }} --git-tag-version=false --preid=${{ github.event.inputs.preid }}
+      - name: set version
+        id: step0
+        run: |
+          version=$(node --eval="process.stdout.write(require('./package.json').version)")
+          echo "release version is $version"
+          echo "::set-output name=version::$version"
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: "${{ github.event.inputs.version }} release ${{ steps.step0.outputs.version }}"
+          add: "package.json"
+          tag: '${{ steps.step0.outputs.version }}'
+        
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: '${{ steps.step0.outputs.version }}'
+          prerelease: true
+          token: ${{ secrets.GITHUB_TOKEN }}
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
