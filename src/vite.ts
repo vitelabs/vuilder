@@ -1,10 +1,6 @@
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
-import * as viteUtils from "./utils";
-import * as compiler from "./compiler";
-import * as config from "./config";
-import * as legacyCompiler from "./legacyCompiler";
 import * as vnode from "./node";
 
 export async function startLocalNetwork(cfg: any) {
@@ -114,7 +110,3 @@ export async function isConfirmed(provider: any, hash?: string) {
   }
 }
 
-export const loadViteConfig = config.loadViteConfig;
-export const compile = compiler.compile;
-export const compileLegacy = legacyCompiler.compile;
-export const utils = viteUtils;

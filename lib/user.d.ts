@@ -6,3 +6,4 @@ export declare class UserAccount extends Account {
     sendToken(toAddress: string, amount: string, tokenId?: string, data?: string): Promise<import("@vite/vitejs-accountblock/accountBlock").default>;
     receiveAll(): Promise<void>;
 }
+//# sourceMappingURL=user.d.ts.map
