@@ -46,5 +46,8 @@ jobs:
           tag: '${{ steps.step0.outputs.version }}'
           prerelease: true
           token: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 
