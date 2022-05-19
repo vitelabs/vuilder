@@ -27,7 +27,8 @@ jobs:
         id: step0
         run: |
           version=$(node --eval="process.stdout.write(require('./package.json').version)")
-          echo "::set-output name=version::$(version)"
+          echo "release version is $version"
+          echo "::set-output name=version::$version"
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
