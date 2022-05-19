@@ -31,7 +31,15 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
-          message: "release ${{ github.event.inputs.tag }}"
+          message: "${{ github.event.inputs.version }} release ${{ steps.step0.outputs.version }}"
           add: "package.json"
           tag: '${{ steps.step0.outputs.version }}'
+        
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: '${{ steps.step0.outputs.version }}'
+          prerelease: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
 
