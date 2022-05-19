@@ -3,9 +3,13 @@ on:
    workflow_dispatch:
       inputs:
          version:
-           description: "release tag"
+           description: "version"
            required: true
-           default: "patch"
+           default: "prerelease"
+         preid:
+           description: "version preid"
+           required: false
+           default: "alpha"
 #   push:
 #     branches:
 #       - master
@@ -22,7 +26,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - name: change version
-        run: npm version ${{ github.event.inputs.version }} --git-tag-version=false
+        run: npm version ${{ github.event.inputs.version }} --git-tag-version=false --preid=${{ github.event.inputs.preid }}
       - name: set version
         id: step0
         run: |
