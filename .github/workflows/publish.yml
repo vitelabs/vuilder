@@ -1,6 +1,11 @@
 name: Publish Package to npmjs
 on:
    workflow_dispatch:
+      inputs:
+         version:
+           description: "release tag"
+           required: true
+           default: "patch"
 #   push:
 #     branches:
 #       - master
@@ -16,7 +21,8 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm version patch
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: 'change version'
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: '${{ github.event.inputs.version }}'
+          git-tag-version: 'true'
