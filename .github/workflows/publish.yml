@@ -1,9 +1,9 @@
 name: Publish Package to npmjs
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
+   workflow_dispatch:
+#   push:
+#     branches:
+#       - master
 
 jobs:
   publish:
@@ -16,6 +16,7 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      - run: npm version patch
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
