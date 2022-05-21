@@ -5,8 +5,8 @@ const fs = require("fs");
 const glob = require("glob");
 const path = require("path");
 
-import * as defaultCfg from "./config.default.json";
-import * as v from "./vite";
+import defaultCfg from "./config.default.json";
+import * as vuilder from "./index";
 
 // parse config file
 function parseCommandLine() {
@@ -78,7 +78,7 @@ async function runTest(argv: any) {
     return;
   }
 
-  const vite = await v.startLocalNetwork(viteCfg);
+  const vite = await vuilder.startLocalNetwork(viteCfg);
   await setup(vite);
   try {
     await testWithCatch(targetFiles, viteCfg);
@@ -92,7 +92,7 @@ async function runCompile(argv: any) {
   // todo print to .artifacts
   argv._.slice(1).forEach(async (file: string) => {
     try {
-      const compiledContracts = await v.compile(file);
+      const compiledContracts = await vuilder.compile(file);
       for (const key in compiledContracts) {
         console.log(compiledContracts[key].name);
         console.log(JSON.stringify(compiledContracts[key].abi));
@@ -111,7 +111,7 @@ require("yargs/yargs")(process.argv.slice(2))
   })
   .command(["node"], "run node", {}, async (argv: any) => {
     const viteCfg = parseConfig(argv);
-    const vite = await v.startLocalNetwork(viteCfg);
+    const vite = await vuilder.startLocalNetwork(viteCfg);
   })
   .command(["compile"], "run compile", {}, async (argv: any) => {
     await runCompile(argv);
