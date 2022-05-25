@@ -32,7 +32,7 @@ For more, refer to [Doc](https://vitelabs.github.io/vuilder-docs/soliditypp/Vuil
 - To install vuilder:
 
 ```
-npm install @vite/vuilder
+npm install @vite/vuilder --save-dev
 ```
 
 - To upgrade to the latest version
