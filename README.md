@@ -23,16 +23,22 @@ Make the vuilder command available to be executed with npx:
 npm link
 ```
 
-## Create 
-Create a Vuilder project [Doc](https://vitelabs.github.io/vuilder-docs/soliditypp/Vuilder/#create-a-vuilder-project)  
+## Create a Vuilder project 
+For more, refer to [Doc](https://vitelabs.github.io/vuilder-docs/soliditypp/Vuilder/#create-a-vuilder-project)  
 
 
 ## Installation
 
-To install vuilder:
+- To install vuilder:
 
 ```
 npm install @vite/vuilder
+```
+
+- To upgrade to the latest version
+```
+npm remove @vite/vuilder
+npm install @vite/vuilder --save-dev
 ```
 
 ## CLI
