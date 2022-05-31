@@ -9,7 +9,9 @@
   "BootNodes": [],
   "PublicModules": [
     "ledger",
-    "contract"
+    "contract",
+    "dex",
+    "tx"
   ],
   "Port": 8487,
   "RPCEnabled": true,
@@ -33,5 +35,6 @@
   "KeyStoreDir": "./",
   "SubscribeEnabled": true,
   "OpenPlugins": true,
-  "vmLogAll": true
+  "vmLogAll": true,
+"TxDexEnable": true
 }

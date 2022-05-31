@@ -10,4 +10,4 @@ else
 	BIN_FILE=gvite
 fi
 cd $SCRIPT_DIR
-exec ./$BIN_FILE --pprof --virtual >./gvite.log
+exec ./$BIN_FILE --pprof virtual >./gvite.log
