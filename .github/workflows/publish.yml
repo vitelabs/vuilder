@@ -25,6 +25,10 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      - name: "Run Test"
+        run: |
+         npm run test
+         npm run test:compiler
       - name: change version
         run: npm version ${{ github.event.inputs.version }} --git-tag-version=false --preid=${{ github.event.inputs.preid }}
       - name: set version
