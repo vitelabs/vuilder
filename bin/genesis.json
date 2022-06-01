@@ -84,60 +84,10 @@
         "TokenSymbol": "VITE",
         "TotalSupply": 1000000000000000000000000000,
         "Decimals": 18,
-        "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46",
-        "MaxSupply": 100000000000000000000000000000,
+        "Owner": "vite_bb6ad02107a4422d6a324fd2e3707ad53cfed9359378a78792",
+        "MaxSupply": 115792089237316195423570985008687907853269984665640564039457584007913129639935,
         "IsOwnerBurnOnly": false,
         "IsReIssuable": true
-      },
-      "tti_564954455820434f494e69b5": {
-        "TokenName": "ViteX Coin",
-        "TokenSymbol": "VX",
-        "TotalSupply": 100000000000000000000000000,
-        "Decimals": 18,
-        "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46",
-        "MaxSupply": 0,
-        "IsOwnerBurnOnly": false,
-        "IsReIssuable": false
-      },
-      "tti_322862b3f8edae3b02b110b1": {
-        "TokenName": "BTC Token",
-        "TokenSymbol": "BTC",
-        "TotalSupply": 2100000000000000,
-        "Decimals": 8,
-        "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46",
-        "MaxSupply": 0,
-        "IsOwnerBurnOnly": true,
-        "IsReIssuable": false
-      },
-      "tti_06822f8d096ecdf9356b666c": {
-        "TokenName": "ETH Token",
-        "TokenSymbol": "ETH",
-        "TotalSupply": 72000000000000000000000000,
-        "Decimals": 18,
-        "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46",
-        "MaxSupply": 0,
-        "IsOwnerBurnOnly": true,
-        "IsReIssuable": false
-      },
-      "tti_973afc9ffd18c4679de42e93": {
-        "TokenName": "USDT Token",
-        "TokenSymbol": "USDT",
-        "TotalSupply": 10000000000000000,
-        "Decimals": 6,
-        "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46",
-        "MaxSupply": 0,
-        "IsOwnerBurnOnly": true,
-        "IsReIssuable": false
-      },
-      "tti_2736f320d7ed1c2871af1d9d": {
-        "TokenName": "VTT Token",
-        "TokenSymbol": "VTT",
-        "TotalSupply": 1000000000000000000000000000,
-        "Decimals": 18,
-        "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46",
-        "MaxSupply": 0,
-        "IsOwnerBurnOnly": true,
-        "IsReIssuable": false
       }
     },
     "LogList": [
@@ -147,45 +97,9 @@
           "3f9dcc00d5e929040142c3fb2b67a3be1b0e91e98dac18d5bc2b7817a4cfecb6",
           "000000000000000000000000000000000000000000005649544520544f4b454e"
         ]
-      },
-      {
-        "Data": "",
-        "Topics": [
-          "3f9dcc00d5e929040142c3fb2b67a3be1b0e91e98dac18d5bc2b7817a4cfecb6",
-          "000000000000000000000000000000000000000000005649544520544f4b454e"
-        ]
-      },
-      {
-        "Data": "",
-        "Topics": [
-          "3f9dcc00d5e929040142c3fb2b67a3be1b0e91e98dac18d5bc2b7817a4cfecb6",
-          "00000000000000000000000000000000000000000000322862b3f8edae3b02b1"
-        ]
-      },
-      {
-        "Data": "",
-        "Topics": [
-          "3f9dcc00d5e929040142c3fb2b67a3be1b0e91e98dac18d5bc2b7817a4cfecb6",
-          "0000000000000000000000000000000000000000000006822f8d096ecdf9356b"
-        ]
-      },
-      {
-        "Data": "",
-        "Topics": [
-          "3f9dcc00d5e929040142c3fb2b67a3be1b0e91e98dac18d5bc2b7817a4cfecb6",
-          "00000000000000000000000000000000000000000000973afc9ffd18c4679de4"
-        ]
-      },
-      {
-        "Data": "",
-        "Topics": [
-          "3f9dcc00d5e929040142c3fb2b67a3be1b0e91e98dac18d5bc2b7817a4cfecb6",
-          "000000000000000000000000000000000000000000002736f320d7ed1c2871af"
-        ]
       }
     ]
   },
-  
   "QuotaInfo": {
     "StakeBeneficialMap": {
       "vite_bb6ad02107a4422d6a324fd2e3707ad53cfed9359378a78792": 10000000000000000000000,
@@ -208,9 +122,6 @@
       ]
     }
   },
-  "DexFundInfo": {
-    "Owner": "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46"
-  },
   "AccountBalanceMap": {
     "vite_bb6ad02107a4422d6a324fd2e3707ad53cfed9359378a78792": {
       "tti_5649544520544f4b454e6e40": 899980000000000000000000000
@@ -223,14 +134,7 @@
     },
     "vite_61214664a1081e286152011570993a701735f5c2c12198ce63": {
       "tti_5649544520544f4b454e6e40": 100000000000000000000000000
-    },
-    "vite_962eab5a19e51fe36506308f6fcf337876139bd5fee3048c46": {
-      "tti_5649544520544f4b454e6e40": 100000000000000000000000000,
-      "tti_322862b3f8edae3b02b110b1": 10000000000,
-      "tti_06822f8d096ecdf9356b666c": 100000000000000000000,
-      "tti_973afc9ffd18c4679de42e93": 100000000000,
-      "tti_2736f320d7ed1c2871af1d9d": 1000000000000000000000000000,
-      "tti_564954455820434f494e69b5": 100000000000000000000000000
     }
+
   }
 }

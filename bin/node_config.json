@@ -10,8 +10,9 @@
   "PublicModules": [
     "ledger",
     "contract",
-    "dex",
-    "tx"
+    "dexfund",
+    "dextrade",
+    "dex"
   ],
   "Port": 8487,
   "RPCEnabled": true,
@@ -35,6 +36,6 @@
   "KeyStoreDir": "./",
   "SubscribeEnabled": true,
   "OpenPlugins": true,
-  "vmLogAll": true,
-"TxDexEnable": true
+  "TxDexEnable": true,
+  "vmLogAll": true
 }
