@@ -10,6 +10,7 @@
   "PublicModules": [
     "ledger",
     "contract",
+    "tx",
     "dexfund",
     "dextrade",
     "dex"
@@ -36,6 +37,6 @@
   "KeyStoreDir": "./",
   "SubscribeEnabled": true,
   "OpenPlugins": true,
-  "TxDexEnable": true,
-  "vmLogAll": true
+  "vmLogAll": true,
+"TxDexEnable": true
 }
