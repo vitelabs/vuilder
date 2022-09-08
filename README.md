@@ -90,7 +90,8 @@ npx vuilder node --config <config.json>
     "latest": {
       "name": "gvite",
       "version": "v2.11.2-rc1",
-      "http": "http://127.0.0.1:23456"
+      "http": "http://127.0.0.1:23456",
+      "config": "/some/path/node_config.json" // optional
     }
   },
   "defaultNode": "latest"

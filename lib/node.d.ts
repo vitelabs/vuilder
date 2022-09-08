@@ -9,9 +9,10 @@ export declare class Node {
     httpUrl: string;
     binPath: string;
     binName: string;
+    nodeCfgPath: string;
     provider?: any;
     stopped: boolean;
-    constructor(url: string, binPath: string, binName: string);
+    constructor(url: string, binPath: string, binName: string, nodeCfgPath: string);
     start(): Promise<void>;
     isUp: () => Promise<boolean>;
     stop(): Promise<void>;
