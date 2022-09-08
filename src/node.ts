@@ -67,13 +67,15 @@ export class Node {
   httpUrl: string;
   binPath: string;
   binName: string;
+  nodeCfgPath: string;
   provider?: any;
   stopped: boolean
 
-  constructor(url: string, binPath: string, binName: string) {
+  constructor(url: string, binPath: string, binName: string, nodeCfgPath: string) {
     this.httpUrl = url;
     this.binPath = binPath;
     this.binName = binName;
+    this.nodeCfgPath = nodeCfgPath;
     this.provider = new ViteAPI(new HTTP_RPC(url), () => {
       console.log("New Vite provider from", url);
     });
@@ -85,7 +87,7 @@ export class Node {
 
     console.log("Node binary:", this.binPath);
     exec(
-      `./restart.sh ${this.binName}`,
+      `./restart.sh ${this.binName} ${this.nodeCfgPath}`,
       {
         cwd: this.binPath,
       },
@@ -106,7 +108,7 @@ export class Node {
   };
 
   async stop() {
-    if(this.stopped) return;
+    if (this.stopped) return;
     this.stopped = true;
     console.log("[Vite] Stopping Vite local node...");
     // process.kill('SIGKILL');

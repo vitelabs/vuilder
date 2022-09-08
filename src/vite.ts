@@ -10,8 +10,9 @@ export async function startLocalNetwork(cfg: any) {
   await vnode.init({ name: nodeCfg.name, version: nodeCfg.version });
   const binName = vnode.binName(nodeCfg.name, nodeCfg.version);
   const binPath = vnode.binPath();
+  const nodeCfgPath = nodeCfg.config ?? "node_config.json";
 
-  const localNode = new vnode.Node(nodeCfg.http, binPath, binName);
+  const localNode = new vnode.Node(nodeCfg.http, binPath, binName, nodeCfgPath);
   await localNode.start();
 
   process.on("SIGINT", async function () {
