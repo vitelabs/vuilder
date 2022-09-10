@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { expect } from "chai";
 
 export const expectThrowsAsync = async (method: any, errorMessage: string) => {
@@ -12,4 +14,11 @@ export const expectThrowsAsync = async (method: any, errorMessage: string) => {
   if (errorMessage) {
     expect(error.message).to.equal(errorMessage);
   }
+}
+
+export const writeFile = (fsPath: string, name: string, data: any, encoding?: BufferEncoding) => {
+  if (!fs.existsSync(fsPath)) {
+    fs.mkdirSync(fsPath, { recursive: true })
+  }
+  return fs.writeFileSync(path.join(fsPath, name), data, encoding);
 }

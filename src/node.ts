@@ -1,4 +1,4 @@
-import { exec, execSync } from "child_process";
+import { ChildProcess, execSync, spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import { ViteAPI } from "@vite/vitejs";
@@ -64,9 +64,11 @@ export function binPath() {
 }
 
 export class Node {
+  process?: ChildProcess
   httpUrl: string;
   binPath: string;
   binName: string;
+  logFileName: string
   nodeCfgPath: string;
   provider?: any;
   stopped: boolean
@@ -75,6 +77,8 @@ export class Node {
     this.httpUrl = url;
     this.binPath = binPath;
     this.binName = binName;
+    const port = parseInt(new URL(url).port)
+    this.logFileName = `gvite-${port}.log`
     this.nodeCfgPath = nodeCfgPath;
     this.provider = new ViteAPI(new HTTP_RPC(url), () => {
       console.log("New Vite provider from", url);
@@ -86,16 +90,18 @@ export class Node {
     console.log("[Vite] Starting Vite local node...");
 
     console.log("Node binary:", this.binPath);
-    exec(
-      `./restart.sh ${this.binName} ${this.nodeCfgPath}`,
+    this.process = spawn(
+      "./startup.sh",
+      [
+        this.binName,
+        this.nodeCfgPath,
+        this.logFileName
+      ],
       {
         cwd: this.binPath,
+        detached: true
       },
-      (error, stdout, stderr) => {
-        // if (error) console.error(error);
-        // console.log(stdout);
-      }
-    );
+    )
     console.log("[Vite] Waiting for the local node to go live...");
 
     await viteUtils.waitFor(this.isUp, "Wait for local node", 1000);
@@ -103,25 +109,21 @@ export class Node {
   }
 
   isUp = async (): Promise<boolean> => {
-    const h = await this.provider.request("ledger_getSnapshotChainHeight");
-    return h && h > 0;
+    try {
+      const h = await this.provider.request("ledger_getSnapshotChainHeight");
+      return h && h > 0;
+    } catch (error) {
+      return false
+    }
   };
 
   async stop() {
     if (this.stopped) return;
+    console.log(`[Vite] Stopping Vite local node... (${this.process?.pid})`);
+    if (this.process?.pid) {
+      process.kill(this.process.pid, "SIGKILL")
+    }
     this.stopped = true;
-    console.log("[Vite] Stopping Vite local node...");
-    // process.kill('SIGKILL');
-    exec(
-      `./shutdown.sh`,
-      {
-        cwd: this.binPath,
-      },
-      (error, stdout, stderr) => {
-        // if (error) console.error(error);
-        // console.log(stdout);
-      }
-    );
     console.log("Node stopped");
   }
 }
