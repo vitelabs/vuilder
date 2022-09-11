@@ -3,3 +3,4 @@ bin/gvite-*
 bin/ledger
 bin/gvite.log
 tsconfig.tsbuildinfo
+test/configs/temp

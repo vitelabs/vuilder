@@ -1,3 +1,4 @@
+import { execSync } from "child_process";
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
@@ -25,6 +26,17 @@ export async function startLocalNetwork(cfg: any) {
     await localNode.stop();
   });
   return localNode;
+}
+
+export async function stopLocalNetworks() {
+  console.log("[Vite] Stopping Vite local nodes...");
+  execSync(
+    `./shutdown.sh`,
+    {
+      cwd: vnode.binPath(),
+    },
+  );
+  console.log("Local nodes stopped");
 }
 
 export function newProvider(url: string): any {

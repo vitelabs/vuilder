@@ -78,6 +78,7 @@ async function runTest(argv: any) {
     return;
   }
 
+  await vuilder.stopLocalNetworks();
   const vite = await vuilder.startLocalNetwork(viteCfg);
   await setup(vite);
   try {
@@ -109,9 +110,22 @@ require("yargs/yargs")(process.argv.slice(2))
   .command(["test"], "run test", {}, async (argv: any) => {
     await runTest(argv);
   })
-  .command(["node"], "run node", {}, async (argv: any) => {
+  .command(["node"], "run node", (yargs: any) => {
+    yargs.positional("config", {
+      type: "string",
+      describe: "the node configuration file"
+    }).positional("keep", {
+      type: "boolean",
+      default: false,
+      describe: "whether to keep the ledger or cleanup before start"
+    })
+  }, async (argv: any) => {
+    if (!argv.keep) {
+      // By default kill all instances of gvite and clear the ledger before start
+      await vuilder.stopLocalNetworks()
+    }
     const viteCfg = parseConfig(argv);
-    const vite = await vuilder.startLocalNetwork(viteCfg);
+    await vuilder.startLocalNetwork(viteCfg);
   })
   .command(["compile"], "run compile", {}, async (argv: any) => {
     await runCompile(argv);
