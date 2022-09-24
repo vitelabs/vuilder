@@ -1,3 +1,4 @@
+
 import os from "os";
 import { ChildProcess, spawnSync, exec, execSync } from 'child_process';
 import {Contract} from "./contract"
@@ -28,8 +29,6 @@ function parse(output: string, source: string) {
     let line = lines[i];
     if (line.startsWith("======= ")) {
       let _source = line.slice("======= ".length, -" =======".length).split(":")[0].trim();
-      if (_source !== source)
-        continue;
       contractName = line.slice("======= ".length, -" =======".length).split(":")[1].trim();
       compiledContracts[contractName] = new Contract(contractName, '', {});
     } else if (line.startsWith("Binary:")) {
