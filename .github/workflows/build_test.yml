@@ -1,0 +1,36 @@
+name: Run Build And Test
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - name: "Run Build"
+        run: |
+         npm run build
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - name: "Run Test"
+        run: |
+         npm run test
+         npm run test:compiler
+
+
