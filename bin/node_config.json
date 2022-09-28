@@ -7,14 +7,7 @@
   "MaxPeers": 100,
   "MaxPendingPeers": 20,
   "BootNodes": [],
-  "PublicModules": [
-    "ledger",
-    "contract",
-    "tx",
-    "dexfund",
-    "dextrade",
-    "dex"
-  ],
+  "PublicModules": ["ledger", "contract", "tx", "dexfund", "dextrade", "dex"],
   "Port": 8487,
   "RPCEnabled": true,
   "HttpHost": "0.0.0.0",
@@ -38,5 +31,5 @@
   "SubscribeEnabled": true,
   "OpenPlugins": true,
   "vmLogAll": true,
-"TxDexEnable": true
+  "TxDexEnable": true
 }
