@@ -1,13 +1,13 @@
 #!/bin/bash
-SCRIPT_DIR=$(
-	cd $(dirname ${BASH_SOURCE[0]})
-	pwd
-)
-rm -rf $SCRIPT_DIR/ledger
-if [ $# == 1 ]; then
-	BIN_FILE=$1
-else
-	BIN_FILE=gvite
+
+SCRIPT_DIR=$(cd $(dirname ${BASH_SOURCE[0]}); pwd)
+BIN_FILE=gvite
+CFG_FILE=node_config.json
+LOG_FILE=gvite.log
+if [ $# == 3 ]; then
+BIN_FILE=$1
+CFG_FILE=$2
+LOG_FILE=$3
 fi
 cd $SCRIPT_DIR
-exec ./$BIN_FILE --pprof virtual >./gvite.log
+exec ./$BIN_FILE virtual --config $CFG_FILE --pprof > ./$LOG_FILE

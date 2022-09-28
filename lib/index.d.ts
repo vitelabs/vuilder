@@ -1,9 +1,9 @@
 import * as utils from "./utils";
 import { compile } from "./compiler";
-import { loadViteConfig } from "./config";
+import { loadViteConfig, updateNodeConfig } from "./config";
 import { compile as compileLegacy } from "./legacyCompiler";
-import { startLocalNetwork, newProvider, newAccount } from "./vite";
+import { startLocalNetwork, stopLocalNetworks, newProvider, newAccount } from "./vite";
 import { UserAccount } from "./user";
 import { Contract } from "./contract";
-export { compile, compileLegacy, loadViteConfig, utils, startLocalNetwork, newProvider, newAccount, UserAccount, Contract, };
+export { compile, compileLegacy, loadViteConfig, updateNodeConfig, utils, startLocalNetwork, stopLocalNetworks, newProvider, newAccount, UserAccount, Contract, };
 //# sourceMappingURL=index.d.ts.map

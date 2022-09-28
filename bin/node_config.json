@@ -33,7 +33,7 @@
   "EntropyStorePassword": "123",
   "VMTestEnabled": true,
   "VMDebug": true,
-  "DataDir": "ledger",
+  "DataDir": "ledger/23456",
   "KeyStoreDir": "./",
   "SubscribeEnabled": true,
   "OpenPlugins": true,

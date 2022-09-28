@@ -1,6 +1,7 @@
 import { UserAccount } from "./user";
 import * as vnode from "./node";
 export declare function startLocalNetwork(cfg: any): Promise<vnode.Node>;
+export declare function stopLocalNetworks(): Promise<void>;
 export declare function newProvider(url: string): any;
 export declare function newAccount(mnemonics: string, index: number, provider: any): UserAccount;
 export declare function mint(provider: any): Promise<void>;

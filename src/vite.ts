@@ -1,3 +1,4 @@
+import { execSync } from "child_process";
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
 const { HTTP_RPC } = require("@vite/vitejs-http");
@@ -10,8 +11,9 @@ export async function startLocalNetwork(cfg: any) {
   await vnode.init({ name: nodeCfg.name, version: nodeCfg.version });
   const binName = vnode.binName(nodeCfg.name, nodeCfg.version);
   const binPath = vnode.binPath();
+  const nodeCfgPath = nodeCfg.config ?? "node_config.json";
 
-  const localNode = new vnode.Node(nodeCfg.http, binPath, binName);
+  const localNode = new vnode.Node(nodeCfg.http, binPath, binName, nodeCfgPath);
   await localNode.start();
 
   process.on("SIGINT", async function () {
@@ -24,6 +26,17 @@ export async function startLocalNetwork(cfg: any) {
     await localNode.stop();
   });
   return localNode;
+}
+
+export async function stopLocalNetworks() {
+  console.log("[Vite] Stopping Vite local nodes...");
+  execSync(
+    `./shutdown.sh`,
+    {
+      cwd: vnode.binPath(),
+    },
+  );
+  console.log("Local nodes stopped");
 }
 
 export function newProvider(url: string): any {
