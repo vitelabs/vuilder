@@ -89,7 +89,7 @@ export class Node {
   async start() {
     console.log("[Vite] Starting Vite local node...");
 
-    console.log("Node binary:", this.binPath);
+    console.log("Node binary:", this.binPath, this.binName, this.nodeCfgPath, this.logFileName);
     this.process = spawn(
       "./startup.sh",
       [

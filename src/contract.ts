@@ -131,7 +131,13 @@ export class Contract {
       tokenId: tokenId,
       amount: amount,
     });
-    block.autoSend();
+    try {
+      await block.autoSend();
+    } catch (e) {
+      console.warn(e)
+      throw new Error("send block fail"); 
+    }
+    
 
     await utils.waitFor(() => {
       return vite.isReceived(this.provider, block.hash);
