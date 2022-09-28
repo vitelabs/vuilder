@@ -54,11 +54,6 @@ export function newAccount(mnemonics: string, index: number, provider: any) {
   return a;
 }
 
-export async function mint(provider: any) {
-  // await sleep(1000);
-  // return await provider.request("miner_mine");
-}
-
 export async function getSnapshotHeight(provider: any) {
   return provider.request("ledger_getSnapshotChainHeight");
 }

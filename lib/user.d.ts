@@ -3,7 +3,7 @@ export declare class UserAccount extends Account {
     _provider: any;
     _setProvider(provider: any): void;
     balance(tokenId?: string): Promise<string>;
-    sendToken(toAddress: string, amount: string, tokenId?: string, data?: string): Promise<import("@vite/vitejs-accountblock/accountBlock").default>;
+    sendToken(toAddress: string, amount: string, tokenId?: string, data?: string): Promise<import("@vite/vitejs-accountblock/dist/accountBlock").default>;
     receiveAll(): Promise<void>;
 }
 //# sourceMappingURL=user.d.ts.map

@@ -4,7 +4,6 @@ export declare function startLocalNetwork(cfg: any): Promise<vnode.Node>;
 export declare function stopLocalNetworks(): Promise<void>;
 export declare function newProvider(url: string): any;
 export declare function newAccount(mnemonics: string, index: number, provider: any): UserAccount;
-export declare function mint(provider: any): Promise<void>;
 export declare function getSnapshotHeight(provider: any): Promise<any>;
 export declare function getAccountHeight(provider: any, to: string): Promise<Number>;
 export declare function getQuota(provider: any, to: string): Promise<any>;
