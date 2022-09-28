@@ -15,11 +15,10 @@ on:
 #       - master
 
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
@@ -29,6 +28,17 @@ jobs:
         run: |
          npm run test
          npm run test:compiler
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
       - name: change version
         run: npm version ${{ github.event.inputs.version }} --git-tag-version=false --preid=${{ github.event.inputs.preid }}
       - name: set version
