@@ -2,7 +2,6 @@ import { ChildProcess, execSync, spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import { ViteAPI } from "@vite/vitejs";
-/* eslint-disable */
 const { HTTP_RPC } = require("@vite/vitejs-http");
 import * as viteUtils from "./utils";
 

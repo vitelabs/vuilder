@@ -1,7 +1,6 @@
 import { constant, abi as abiUtil } from "@vite/vitejs";
 import * as utils from "./utils";
 import * as vite from "./vite";
-/* eslint-disable */
 const linker = require("@vite/solppc/linker");
 const { Vite_TokenId } = constant;
 
@@ -51,7 +50,7 @@ export class Contract {
       params?: string | Array<string | boolean>;
       tokenId?: string;
       amount?: string;
-      libraries?: Object;
+      libraries?: unknown;
     }
   ) {
     if (!this.deployer) {
@@ -170,7 +169,7 @@ export class Contract {
     return receiveBlock;
   }
 
-  link(libraries: Object) {
+  link(libraries: unknown) {
     if (libraries) {
       // console.log(linker.findLinkReferences(this.byteCode));
       this.byteCode = linker.linkBytecode(this.byteCode, libraries);
@@ -191,7 +190,8 @@ export class Contract {
     if (this.offchainCode && this.offchainCode.length > 0)
       codeBase64 = Buffer.from(this.offchainCode, 'hex').toString('base64');
 
-    while(true) {
+    let i=0;
+    while(i<100) {
       const result = codeBase64 ? 
         await this.provider.request("contract_callOffChainMethod", {
           address: this.address,
@@ -217,6 +217,7 @@ export class Contract {
       }
       console.log('Query failed, try again.');
       await utils.sleep(500);
+      i++;
     }    
   }
 
@@ -226,17 +227,19 @@ export class Contract {
 
   async waitForHeight(height: number) {
     process.stdout.write('Wait for account height [' + height + '] ');
-    while(true) {
+    let i=0;
+    while(i<100) {
       const h = await this.height();
       process.stdout.write('.');
       if (h >= height) break;
       await utils.sleep(1000);
+      i++;
     }
     console.log(' OK');
   }
 
   async getPastEvents(eventName = 'allEvents', {fromHeight = 0, toHeight = 0}:{
-    filter?: Object,
+    filter?: unknown,
     fromHeight?: number,
     toHeight?: number
   }) {

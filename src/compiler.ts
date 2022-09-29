@@ -3,7 +3,6 @@ import * as _path from "path";
 import { Contract } from "./contract"
 import * as utils from "./utils";
 
-/* eslint-disable */
 const solppc = require('@vite/solppc');
 
 const basePath = 'contracts';

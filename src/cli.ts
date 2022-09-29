@@ -1,12 +1,7 @@
 #!/usr/bin/env ts-node
-
-/* eslint-disable */
 const yaml = require("js-yaml");
-/* eslint-disable */
 const fs = require("fs");
-/* eslint-disable */
 const glob = require("glob");
-/* eslint-disable */
 const path = require("path");
 
 import defaultCfg from "./config.default.json";
@@ -14,9 +9,7 @@ import * as vuilder from "./index";
 
 // parse config file
 function parseCommandLine() {
-  /* eslint-disable */
   const yargs = require("yargs/yargs");
-  /* eslint-disable */
   const { hideBin } = require("yargs/helpers");
   const argv = yargs(hideBin(process.argv)).argv;
 
@@ -26,10 +19,17 @@ function parseCommandLine() {
 function parseConfig(argv: any) {
   if (argv.config) {
     const configJson = yaml.load(fs.readFileSync(argv.config, "utf8"));
-    return Object.assign({}, defaultCfg, configJson);
+    return options(argv, Object.assign({}, defaultCfg, configJson));
   } else {
-    return defaultCfg;
+    return options(argv, defaultCfg);
   }
+}
+
+function options(argv: any, cfg: any) {
+  if (argv.noneNode) {
+    cfg.defaultNode = "none";
+  }
+  return cfg;
 }
 
 function testTargetFiles(argv: any) {
@@ -113,26 +113,49 @@ async function runCompile(argv: any) {
 }
 
 require("yargs/yargs")(process.argv.slice(2))
-  .command(["test"], "run test", {}, async (argv: any) => {
-    await runTest(argv);
-  })
-  .command(["node"], "run node", (yargs: any) => {
-    yargs.positional("config", {
-      type: "string",
-      describe: "the node configuration file"
-    }).positional("keep", {
-      type: "boolean",
-      default: false,
-      describe: "whether to keep the ledger or cleanup before start"
-    })
-  }, async (argv: any) => {
-    if (!argv.keep) {
-      // By default kill all instances of gvite and clear the ledger before start
-      await vuilder.stopLocalNetworks()
+  .command(
+    ["test"],
+    "run test",
+    (yargs: any) => {
+      yargs
+        .positional("config", {
+          type: "string",
+          describe: "the node configuration file",
+        })
+        .positional("noneNode", {
+          type: "boolean",
+          default: false,
+          describe: "whether start gvite node",
+        });
+    },
+    async (argv: any) => {
+      await runTest(argv);
     }
-    const viteCfg = parseConfig(argv);
-    await vuilder.startLocalNetwork(viteCfg);
-  })
+  )
+  .command(
+    ["node"],
+    "run node",
+    (yargs: any) => {
+      yargs
+        .positional("config", {
+          type: "string",
+          describe: "the node configuration file",
+        })
+        .positional("keep", {
+          type: "boolean",
+          default: false,
+          describe: "whether to keep the ledger or cleanup before start",
+        })
+    },
+    async (argv: any) => {
+      if (!argv.keep) {
+        // By default kill all instances of gvite and clear the ledger before start
+        await vuilder.stopLocalNetworks();
+      }
+      const viteCfg = parseConfig(argv);
+      await vuilder.startLocalNetwork(viteCfg);
+    }
+  )
   .command(["compile"], "run compile", {}, async (argv: any) => {
     await runCompile(argv);
   })

@@ -4,7 +4,6 @@ import { expectThrowsAsync } from "./utils";
 import * as vuilder from "../src/index";
 import * as defaultCfg from "../src/config.default.json";
 
-/* eslint-disable */
 chai.use(require('chai-string'));
 
 describe("test Compiler", function () {

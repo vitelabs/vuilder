@@ -1,7 +1,6 @@
 import { execSync } from "child_process";
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
-/* eslint-disable */
 const { HTTP_RPC } = require("@vite/vitejs-http");
 import * as vnode from "./node";
 
