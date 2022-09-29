@@ -14,6 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
     "test:compiler": "mocha -r ts-node/register test/compiler.spec.ts"
   },
@@ -39,8 +40,11 @@
   "devDependencies": {
     "@types/chai": "^4.3.1",
     "@types/chai-string": "^1.4.2",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
     "chai": "^4.3.6",
-    "chai-string": "^1.5.0"
+    "chai-string": "^1.5.0",
+    "eslint": "^8.24.0"
   },
   "dependencies": {
     "@types/mocha": "^9.1.0",

@@ -11,12 +11,12 @@ export class UserAccount extends Account {
         this.setProvider(provider);
     }
 
-    async balance(tokenId: string = 'tti_5649544520544f4b454e6e40'): Promise<string> {
+    async balance(tokenId = 'tti_5649544520544f4b454e6e40'): Promise<string> {
         const result = await this._provider.getBalanceInfo(this.address);
         return result?.balance?.balanceInfoMap?.[tokenId]?.balance || '0';
     }
 
-    async sendToken(toAddress: string, amount: string, tokenId: string = 'tti_5649544520544f4b454e6e40', data: string = '') {
+    async sendToken(toAddress: string, amount: string, tokenId = 'tti_5649544520544f4b454e6e40', data = '') {
         const block = this.send({ toAddress: toAddress, tokenId: tokenId, amount: amount, data: data});
         await block.autoSend();
         await utils.waitFor(() => {

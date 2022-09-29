@@ -7,7 +7,7 @@ import {binPath} from "./node";
 async function _compile(source: string) {
     const path = `contracts/${source}`;
     try {
-      let result = String(
+      const result = String(
           execSync(
               `${binPath()}/solppc-0.4.3 --bin --abi ${path}`
           )
@@ -20,14 +20,14 @@ async function _compile(source: string) {
 }
 
 function parse(output: string, source: string) {
-  let compiledContracts: any = {};
-  let lines = output.split(os.EOL);
+  const compiledContracts: any = {};
+  const lines = output.split(os.EOL);
   let contractName;
 
   for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
+    const line = lines[i];
     if (line.startsWith("======= ")) {
-      let _source = line.slice("======= ".length, -" =======".length).split(":")[0].trim();
+      const _source = line.slice("======= ".length, -" =======".length).split(":")[0].trim();
       if (_source !== source)
         continue;
       contractName = line.slice("======= ".length, -" =======".length).split(":")[1].trim();

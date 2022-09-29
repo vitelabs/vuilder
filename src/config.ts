@@ -23,3 +23,10 @@ export function updateNodeConfig(cfg: any) {
   const newCfg = Object.assign({}, retJson, cfg);
   fs.writeFileSync(fsPath, JSON.stringify(newCfg, null, 2));
 }
+
+export const defaultViteNetwork = {
+  http: "http://127.0.0.1:23456/",
+  ws: "http://127.0.0.1:23457/",
+  mnemonic:
+    "record deliver increase organ subject whisper private tourist final athlete unit jacket arrow trick sweet chuckle direct print master post senior pluck whale taxi",
+};

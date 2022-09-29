@@ -3,7 +3,8 @@ import * as _path from "path";
 import { Contract } from "./contract"
 import * as utils from "./utils";
 
-var solppc = require('@vite/solppc');
+/* eslint-disable */
+const solppc = require('@vite/solppc');
 
 const basePath = 'contracts';
 
@@ -25,18 +26,18 @@ export async function compile(sourcePath: string) {
     }
   };
 
-  let output = JSON.parse(solppc.compile(JSON.stringify(input), { import: findImports }));
+  const output = JSON.parse(solppc.compile(JSON.stringify(input), { import: findImports }));
   // ignore 3805 warning (pre-release compiler)
   const filteredErrors = output.errors?.filter((err: any) => { return err.errorCode !== '3805' });
   if (filteredErrors && filteredErrors.length > 0) {
     console.error('Compile errors:', filteredErrors);
   }
-  let contracts = output.contracts[sourcePath];
-  let compiledContracts: any = {};
+  const contracts = output.contracts[sourcePath];
+  const compiledContracts: any = {};
 
-  for (var contractName in contracts) {
-    let code = contracts[contractName].evm.bytecode.object;
-    let abi = contracts[contractName].abi;
+  for (const contractName in contracts) {
+    const code = contracts[contractName].evm.bytecode.object;
+    const abi = contracts[contractName].abi;
 
     compiledContracts[contractName] = new Contract(contractName, code, abi);
   }
@@ -45,7 +46,7 @@ export async function compile(sourcePath: string) {
 }
 
 function readSourceFile(path: string) {
-  let content = fs.readFileSync(path).toString();
+  const content = fs.readFileSync(path).toString();
   // console.log('Compile source file:', path);
   return content;
 }

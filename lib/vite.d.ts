@@ -5,7 +5,7 @@ export declare function stopLocalNetworks(): Promise<void>;
 export declare function newProvider(url: string): any;
 export declare function newAccount(mnemonics: string, index: number, provider: any): UserAccount;
 export declare function getSnapshotHeight(provider: any): Promise<any>;
-export declare function getAccountHeight(provider: any, to: string): Promise<Number>;
+export declare function getAccountHeight(provider: any, to: string): Promise<number>;
 export declare function getQuota(provider: any, to: string): Promise<any>;
 export declare function getAccountBlock(provider: any, hash?: string): Promise<any>;
 export declare function getBalance(provider: any, address: string, tokenId?: string): Promise<any>;

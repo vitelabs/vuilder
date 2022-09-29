@@ -10,9 +10,9 @@ export declare class Contract {
     setProvider(provider: any): Contract;
     setDeployer(deployer: any): Contract;
     deploy({ responseLatency, quotaMultiplier, randomDegree, params, tokenId, amount, libraries }: {
-        responseLatency?: Number;
-        quotaMultiplier?: Number;
-        randomDegree?: Number;
+        responseLatency?: number;
+        quotaMultiplier?: number;
+        randomDegree?: number;
         params?: string | Array<string | boolean>;
         tokenId?: string;
         amount?: string;
@@ -26,12 +26,12 @@ export declare class Contract {
     }): Promise<any>;
     link(libraries: Object): void;
     query(methodName: string, params: any[]): Promise<any[] | null>;
-    height(): Promise<Number>;
-    waitForHeight(height: Number): Promise<void>;
+    height(): Promise<number>;
+    waitForHeight(height: number): Promise<void>;
     getPastEvents(eventName: string | undefined, { fromHeight, toHeight }: {
         filter?: Object;
-        fromHeight?: Number;
-        toHeight?: Number;
+        fromHeight?: number;
+        toHeight?: number;
     }): Promise<any[]>;
     balance(tokenId?: string): Promise<string>;
 }

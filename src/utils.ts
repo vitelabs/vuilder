@@ -16,7 +16,7 @@ export function sleep(ms: number) {
   });
 }
 
-export async function waitFor(conditionFn: () => Promise<boolean>, description: string = '', pollInterval: number = 1000) {
+export async function waitFor(conditionFn: () => Promise<boolean>, description = '', pollInterval = 1000) {
   process.stdout.write(description);
   const poll = (resolve: any) => {
     conditionFn().then((result) => {

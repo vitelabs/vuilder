@@ -1,8 +1,12 @@
 #!/usr/bin/env ts-node
 
+/* eslint-disable */
 const yaml = require("js-yaml");
+/* eslint-disable */
 const fs = require("fs");
+/* eslint-disable */
 const glob = require("glob");
+/* eslint-disable */
 const path = require("path");
 
 import defaultCfg from "./config.default.json";
@@ -10,7 +14,9 @@ import * as vuilder from "./index";
 
 // parse config file
 function parseCommandLine() {
+  /* eslint-disable */
   const yargs = require("yargs/yargs");
+  /* eslint-disable */
   const { hideBin } = require("yargs/helpers");
   const argv = yargs(hideBin(process.argv)).argv;
 
@@ -27,7 +33,7 @@ function parseConfig(argv: any) {
 }
 
 function testTargetFiles(argv: any) {
-  let result: any[] = [];
+  const result: any[] = [];
   if (argv._.length === 1) {
     const files = glob.sync("./test/**/*.spec.ts", { cwd: "" });
     result.push(...files);

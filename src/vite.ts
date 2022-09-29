@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
 import { ViteAPI, wallet } from "@vite/vitejs";
 import { UserAccount } from "./user";
+/* eslint-disable */
 const { HTTP_RPC } = require("@vite/vitejs-http");
 import * as vnode from "./node";
 
@@ -48,7 +49,7 @@ export function newProvider(url: string): any {
 
 export function newAccount(mnemonics: string, index: number, provider: any) {
   const addressObj = wallet.getWallet(mnemonics).deriveAddress(index);
-  let a = new UserAccount(addressObj.address);
+  const a = new UserAccount(addressObj.address);
   a.setPrivateKey(addressObj.privateKey);
   a._setProvider(provider);
   return a;
@@ -61,7 +62,7 @@ export async function getSnapshotHeight(provider: any) {
 export async function getAccountHeight(
   provider: any,
   to: string
-): Promise<Number> {
+): Promise<number> {
   return provider
     .request("ledger_getLatestAccountBlock", to)
     .then((block: any) => {
@@ -84,7 +85,7 @@ export async function getAccountBlock(provider: any, hash?: string) {
 export async function getBalance(
   provider: any,
   address: string,
-  tokenId: string = "tti_5649544520544f4b454e6e40"
+  tokenId = "tti_5649544520544f4b454e6e40"
 ) {
   const result = await provider.getBalanceInfo(address);
   const balance = result.balance.balanceInfoMap[tokenId].balance;

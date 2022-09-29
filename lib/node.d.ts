@@ -1,11 +1,11 @@
 /// <reference types="node" />
 import { ChildProcess } from "child_process";
 export declare function init({ name, version, type, }: {
-    name?: String;
-    version: String;
-    type?: String;
+    name?: string;
+    version: string;
+    type?: string;
 }): Promise<void>;
-export declare function binName(name: String, version: String): string;
+export declare function binName(name: string, version: string): string;
 export declare function binPath(): string;
 export declare class Node {
     process?: ChildProcess;

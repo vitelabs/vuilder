@@ -2,6 +2,7 @@ import { ChildProcess, execSync, spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import { ViteAPI } from "@vite/vitejs";
+/* eslint-disable */
 const { HTTP_RPC } = require("@vite/vitejs-http");
 import * as viteUtils from "./utils";
 
@@ -13,11 +14,11 @@ export async function init({
   version,
   type = "bin",
 }: {
-  name?: String;
-  version: String;
-  type?: String;
+  name?: string;
+  version: string;
+  type?: string;
 }) {
-  let binFileName = await binName(name, version);
+  const binFileName = await binName(name, version);
   if (fs.existsSync(path.join(binPath(), binFileName))) {
     return;
   }
@@ -54,7 +55,7 @@ export async function init({
   console.log(result);
 }
 
-export function binName(name: String, version: String) {
+export function binName(name: string, version: string) {
   const binName = `${name}-${version}`;
   return binName;
 }
